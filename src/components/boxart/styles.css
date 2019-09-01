@@ -1,9 +1,9 @@
 .boxart {
-  height: 0;
-  overflow: hidden;
-  padding: 28.125% 0;
-  position: relative;
-  width: 100%;
+  height: 0;
+  overflow: hidden;
+  padding: 28.125% 0;
+  position: relative;
+  width: 100%;
 }
 
 .boxart__img {

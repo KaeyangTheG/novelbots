@@ -9,23 +9,41 @@
 }
 
 .carousel__items-container__item {
-  flex-basis: 0.2;
   flex-grow: 0;
   flex-shrink: 0;
   padding-right: 5px;
+  width: 20%;
 }
 
 .carousel__arrow-container {
-  background-color: rgba(20, 20, 20, 0.5);
+  background-color: rgba(20, 20, 20, 0.1);
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
+  cursor: pointer;
+  right: -40px;
   z-index: 20;
-  width: 4%;
+  width: 40px;
+  font-size: 36px;
   display: flex;
   justify-content: center;
   text-align: center;
   color: #fff;
-  transform: translateX(100%);
+}
+
+.carousel__arrow-container.prev {
+  right: unset;
+  left: -40px;
+}
+
+.carousel__arrow-container .icon-button {
+  display: none;
+}
+
+.carousel:hover .carousel__arrow-container {
+  background-color: rgba(20, 20, 20, 0.5);
+}
+
+.carousel:hover .carousel__arrow-container .icon-button {
+  display: inline-block;
 }
