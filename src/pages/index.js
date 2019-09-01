@@ -18,11 +18,11 @@ export default () => (
     <div className="container">
       <h3>Interactive Films</h3>
       <Carousel>
-        <Boxart src="/assets/everest.jpg" alt="title preview" />
-        <Boxart src="/assets/lion.jpg" alt="title preview" />
-        <Boxart src="/assets/sunset.jpg" alt="title preview" />
-        <Boxart src="/assets/woods.jpg" alt="title preview" />
-        <Boxart src="/assets/everest.jpg" alt="title preview" />
+        <Boxart src="/assets/timemachine.webp" alt="title preview" />
+        <Boxart src="/assets/aladdin.webp" alt="title preview" />
+        <Boxart src="/assets/bandersnatch.webp" alt="title preview" />
+        <Boxart src="/assets/godfather.webp" alt="title preview" />
+        <Boxart src="/assets/indy.webp" alt="title preview" />
         <Boxart src="/assets/lion.jpg" alt="title preview" />
         <Boxart src="/assets/sunset.jpg" alt="title preview" />
         <Boxart src="/assets/woods.jpg" alt="title preview" />
