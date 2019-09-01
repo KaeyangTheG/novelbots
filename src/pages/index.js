@@ -1,10 +1,22 @@
 import React from 'react'
 import Boxart from '../components/boxart';
 import Carousel from '../components/carousel';
+import PreviewBanner from '../components/preview-banner';
+
+const sample = {
+  id: 1,
+  name: 'The Time Machine',
+  synopsis: `Chat, Matt and Rob will do anything to avoid hard work.  If this means
+  travelling through time pursued by zombies and gun-toting agents then so be it.`,
+  preview: {
+    poster: '/assets/timemachine.png',
+  }
+};
 
 export default () => (
   <>
     <div className="container">
+      <h3>Interactive Films</h3>
       <Carousel>
         <Boxart src="/assets/everest.jpg" alt="title preview" />
         <Boxart src="/assets/lion.jpg" alt="title preview" />
@@ -21,5 +33,11 @@ export default () => (
         <Boxart src="/assets/woods.jpg" alt="title preview" />
       </Carousel>
     </div>
+    <PreviewBanner
+      id={sample.id}
+      name={sample.name}
+      synopsis={sample.synopsis}
+      preview={sample.preview}
+    />
   </>
 )
