@@ -1,4 +1,5 @@
 .boxart {
+  cursor: pointer;
   height: 0;
   overflow: hidden;
   padding: 28.125% 0;
