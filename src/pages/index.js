@@ -37,8 +37,8 @@ const samples = [
   {
     id: 4,
     name: 'The Meme Father',
-    synopsis: `The first film in the universally acclaimed trilogy. The Godfather, Vito Corleone, must choose
-    whether to invest in the drug baron Virgil Sollozzo. The fate of the galaxy may ride on his decision.`,
+    synopsis: `The Godfather, Vito Corleone, must choose
+    whether to invest in the drug baron Virgil Sollozzo. The fate of the galaxy may rest on his decision.`,
     thumbnail: '/assets/boxart/godfather.webp',
     preview: {
       poster: '/assets/posters/godfather2.webp',
@@ -78,6 +78,7 @@ class Lander extends React.Component {
             {
               samples.map(({thumbnail, name}, index) => (
                 <Boxart
+                  selected={selected === index}
                   src={thumbnail}
                   alt={name}
                   handleClick={() => this.setState({ selected: index })}
