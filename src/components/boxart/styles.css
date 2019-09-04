@@ -24,6 +24,10 @@
   height: 100%;
   border: 4px solid white;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
 }
 
 .boxart__focus-ring:before {
@@ -52,4 +56,39 @@
   border-width: 7px 13px 0 13px;
   margin-top: 3px;
   border-color: #fff transparent transparent transparent;
+}
+
+.boxart__focus-ring__play {
+  width: 5vw;
+  height: 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s;
+}
+
+.boxart__focus-ring__play:hover {
+  background-color: rgba(20, 20, 20, 0.5);
+  color: red;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.boxart__focus-ring .icon-play {
+  position: relative;
+  right: -3px;
+  font-size: 2.2vw;
+  opacity: 0;
+}
+
+.boxart__focus-ring:hover .icon-play {
+  opacity: 1;
+}
+
+.boxart__focus-ring:hover .boxart__focus-ring__play {
+  border-color: #fff;
 }
