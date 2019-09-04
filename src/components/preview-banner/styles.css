@@ -49,4 +49,19 @@
   background-position: top center;
   background-size: cover;
   width: 70%;
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-preview__trailer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.2s;
+  opacity: 1;
+}
+
+.movie-preview__trailer.loading {
+  opacity: 0;
 }
