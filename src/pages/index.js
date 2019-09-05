@@ -12,7 +12,7 @@ const samples = [
     thumbnail: '/assets/boxart/timemachine.webp',
     preview: {
       poster: '/assets/posters/timemachine.png',
-      src: '/assets/trailers/b.mp4',
+      src: '/assets/trailers/timemachine.webm',
     }
   },
   {
@@ -23,7 +23,7 @@ const samples = [
     thumbnail: '/assets/boxart/aladdin.webp',
     preview: {
       poster: '/assets/posters/aladdin.webp',
-      src: '/assets/trailers/j.mp4',
+      src: '/assets/trailers/mulan.mp4',
     }
   },
   {
@@ -34,7 +34,7 @@ const samples = [
     thumbnail: '/assets/boxart/bandersnatch.webp',
     preview: {
       poster: '/assets/posters/bandersnatch.webp',
-      src: '/assets/trailers/b.mp4',
+      src: '/assets/trailers/music.mp4',
     }
   },
   {
@@ -45,7 +45,7 @@ const samples = [
     thumbnail: '/assets/boxart/godfather.webp',
     preview: {
       poster: '/assets/posters/godfather2.webp',
-      src: '/assets/trailers/j.mp4',
+      src: '/assets/trailers/godfather.mp4',
     }
   },
   {
@@ -56,7 +56,7 @@ const samples = [
     thumbnail: '/assets/boxart/indy.webp',
     preview: {
       poster: '/assets/posters/indy.webp',
-      src: '/assets/trailers/b.mp4',
+      src: '/assets/trailers/jones.mp4',
     }
   }
 ];
