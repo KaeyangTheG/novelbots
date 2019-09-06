@@ -1,0 +1,654 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "name": "The Time Machine",
+      "synopsis": "Chat, Matt and Rob will do anything to avoid hard work. If this means travelling through time pursued by zombies and gun-toting agents then so be it.",
+      "thumbnail": "/assets/boxart/timemachine.webp",
+      "preview": {
+        "poster": "/assets/posters/timemachine.png",
+        "src": "/assets/trailers/timemachine.webm"
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "index": 1,
+          "title": "Beginning",
+          "startChoice": 109,
+          "endChoice": 120,
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            },
+            {
+              "index": 5,
+              "title": "Not a chance"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "index": 2,
+          "title": "Get in",
+          "startChoice": 96,
+          "endChoice": 107,
+          "children": [
+            {
+              "index": 3,
+              "title": "Save Rob"
+            },
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "index": 3,
+          "title": "Save Rob",
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "index": 4,
+          "title": "Don't save Rob",
+          "startChoice": 83,
+          "endChoice": 94,
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            },
+            {
+              "index": 7,
+              "title": "Fight the Zombies"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "index": 5,
+          "title": "Not a chance",
+          "children": [
+            {
+              "index": 1,
+              "title": "Beginning"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "index": 6,
+          "title": "Fight the Agents",
+          "startChoice": 56,
+          "endChoice": 67,
+          "children": [
+            {
+              "index": 8,
+              "title": "Save em"
+            },
+            {
+              "index": 9,
+              "title": "Sorry GTG"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "index": 7,
+          "title": "Fight the Zombies",
+          "children": [
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "index": 8,
+          "title": "Save em",
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "index": 9,
+          "title": "Sorry GTG",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Prince Ali of Babwa",
+      "synopsis": "Based on a true story, an impoverished street rat cons his way into the royal palace with the help of demonic allies. Can he win over princess Jasmine and stay true to himself?",
+      "thumbnail": "/assets/boxart/aladdin.webp",
+      "preview": {
+        "poster": "/assets/posters/aladdin.webp",
+        "src": "/assets/trailers/mulan.mp4"
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "index": 1,
+          "title": "Beginning",
+          "startChoice": 109,
+          "endChoice": 120,
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            },
+            {
+              "index": 5,
+              "title": "Not a chance"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "index": 2,
+          "title": "Get in",
+          "startChoice": 96,
+          "endChoice": 107,
+          "children": [
+            {
+              "index": 3,
+              "title": "Save Rob"
+            },
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "index": 3,
+          "title": "Save Rob",
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "index": 4,
+          "title": "Don't save Rob",
+          "startChoice": 83,
+          "endChoice": 94,
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            },
+            {
+              "index": 7,
+              "title": "Fight the Zombies"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "index": 5,
+          "title": "Not a chance",
+          "children": [
+            {
+              "index": 1,
+              "title": "Beginning"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "index": 6,
+          "title": "Fight the Agents",
+          "startChoice": 56,
+          "endChoice": 67,
+          "children": [
+            {
+              "index": 8,
+              "title": "Save em"
+            },
+            {
+              "index": 9,
+              "title": "Sorry GTG"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "index": 7,
+          "title": "Fight the Zombies",
+          "children": [
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "index": 8,
+          "title": "Save em",
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "index": 9,
+          "title": "Sorry GTG",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "The Choice",
+      "synopsis": "A British romantic drama about a boy and his records just before the great video game collapse of 1984.",
+      "thumbnail": "/assets/boxart/bandersnatch.webp",
+      "preview": {
+        "poster": "/assets/posters/bandersnatch.webp",
+        "src": "/assets/trailers/music.mp4"
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "index": 1,
+          "title": "Beginning",
+          "startChoice": 109,
+          "endChoice": 120,
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            },
+            {
+              "index": 5,
+              "title": "Not a chance"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "index": 2,
+          "title": "Get in",
+          "startChoice": 96,
+          "endChoice": 107,
+          "children": [
+            {
+              "index": 3,
+              "title": "Save Rob"
+            },
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "index": 3,
+          "title": "Save Rob",
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "index": 4,
+          "title": "Don't save Rob",
+          "startChoice": 83,
+          "endChoice": 94,
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            },
+            {
+              "index": 7,
+              "title": "Fight the Zombies"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "index": 5,
+          "title": "Not a chance",
+          "children": [
+            {
+              "index": 1,
+              "title": "Beginning"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "index": 6,
+          "title": "Fight the Agents",
+          "startChoice": 56,
+          "endChoice": 67,
+          "children": [
+            {
+              "index": 8,
+              "title": "Save em"
+            },
+            {
+              "index": 9,
+              "title": "Sorry GTG"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "index": 7,
+          "title": "Fight the Zombies",
+          "children": [
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "index": 8,
+          "title": "Save em",
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "index": 9,
+          "title": "Sorry GTG",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "The Meme Father",
+      "synopsis": "The Godfather, Vito Corleone, must choose whether to invest in the drug baron Virgil Sollozzo. The fate of the galaxy may rest on his decision.",
+      "thumbnail": "/assets/boxart/godfather.webp",
+      "preview": {
+        "poster": "/assets/posters/godfather2.webp",
+        "src": "/assets/trailers/godfather.mp4"
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "index": 1,
+          "title": "Beginning",
+          "startChoice": 109,
+          "endChoice": 120,
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            },
+            {
+              "index": 5,
+              "title": "Not a chance"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "index": 2,
+          "title": "Get in",
+          "startChoice": 96,
+          "endChoice": 107,
+          "children": [
+            {
+              "index": 3,
+              "title": "Save Rob"
+            },
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "index": 3,
+          "title": "Save Rob",
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "index": 4,
+          "title": "Don't save Rob",
+          "startChoice": 83,
+          "endChoice": 94,
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            },
+            {
+              "index": 7,
+              "title": "Fight the Zombies"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "index": 5,
+          "title": "Not a chance",
+          "children": [
+            {
+              "index": 1,
+              "title": "Beginning"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "index": 6,
+          "title": "Fight the Agents",
+          "startChoice": 56,
+          "endChoice": 67,
+          "children": [
+            {
+              "index": 8,
+              "title": "Save em"
+            },
+            {
+              "index": 9,
+              "title": "Sorry GTG"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "index": 7,
+          "title": "Fight the Zombies",
+          "children": [
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "index": 8,
+          "title": "Save em",
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "index": 9,
+          "title": "Sorry GTG",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Indiana Jones and the second Last Crusade",
+      "synopsis": "Millionaire Harrison Ford must once again don the hat of his alter ego, Indiana Jones, in order to irrefutably prove that Christianity is true.",
+      "thumbnail": "/assets/boxart/indy.webp",
+      "preview": {
+        "poster": "/assets/posters/indy.webp",
+        "src": "/assets/trailers/jones.mp4"
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "index": 1,
+          "title": "Beginning",
+          "startChoice": 109,
+          "endChoice": 120,
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            },
+            {
+              "index": 5,
+              "title": "Not a chance"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "index": 2,
+          "title": "Get in",
+          "startChoice": 96,
+          "endChoice": 107,
+          "children": [
+            {
+              "index": 3,
+              "title": "Save Rob"
+            },
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "index": 3,
+          "title": "Save Rob",
+          "children": [
+            {
+              "index": 2,
+              "title": "Get in"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "index": 4,
+          "title": "Don't save Rob",
+          "startChoice": 83,
+          "endChoice": 94,
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            },
+            {
+              "index": 7,
+              "title": "Fight the Zombies"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "index": 5,
+          "title": "Not a chance",
+          "children": [
+            {
+              "index": 1,
+              "title": "Beginning"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "index": 6,
+          "title": "Fight the Agents",
+          "startChoice": 56,
+          "endChoice": 67,
+          "children": [
+            {
+              "index": 8,
+              "title": "Save em"
+            },
+            {
+              "index": 9,
+              "title": "Sorry GTG"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "index": 7,
+          "title": "Fight the Zombies",
+          "children": [
+            {
+              "index": 4,
+              "title": "Don't save Rob"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "index": 8,
+          "title": "Save em",
+          "children": [
+            {
+              "index": 6,
+              "title": "Fight the Agents"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "index": 9,
+          "title": "Sorry GTG",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
