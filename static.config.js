@@ -3,25 +3,36 @@ import axios from 'axios'
 
 export default {
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-
+    const { data: movies } = await axios.get(
+      'http://localhost:3008/movies'
+    );
+    
     return [
       {
-        path: '/blog',
+        path: '/movies',
         getData: () => ({
-          posts,
+          movies,
         }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          template: 'src/containers/Post',
-          getData: () => ({
-            post,
-          }),
-        })),
+        children: movies.map(
+          movie => {
+            return ({
+              path: `/${movie.id}`,
+              template: 'src/containers/Movie.js',
+              getData: () => ({
+                movie,
+              })
+            });
+          }
+        ),
       },
-    ]
+    ];
+  },
+  devServer: {
+    proxy: {
+      "/api": {
+        "target": "http://localhost:3008",
+      }
+    },
   },
   plugins: [
     [
