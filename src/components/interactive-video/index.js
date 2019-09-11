@@ -2,6 +2,17 @@ import React from 'react';
 import VideoNode from './video-node';
 import './styles.css';
 
+const createVideoNodes = (videoNodes, assetRoot) => {
+  const masterList = videoNodes.map(videoNode => {
+    return new VideoNode({...videoNode, assetRoot, withInit: false});
+  });
+  masterList.forEach(videoNode => {
+    videoNode.children = 
+      videoNode.children.map(({index}) => masterList[index])
+  });
+  return masterList;
+};
+
 class InteractiveVideo extends React.Component {
   videoRef = React.createRef();
   timeRanges = [];
@@ -18,12 +29,15 @@ class InteractiveVideo extends React.Component {
 
   componentDidMount() {
     // set initial video properties
-    const {volume} = this.props;
+    const {volume, nodeData} = this.props;
     const video = this.videoRef.current;
     video.volume = volume;
 
     // begin loading the video nodes
-    const node = new VideoNode(this.props.rootNode);
+    const videoNodes = createVideoNodes(nodeData);
+    this.head = videoNodes[0];
+    this.curr = this.head;
+    
     video.src = URL.createObjectURL(this.mediaSource);
     this.timeRanges = [];
     this.mediaSource.addEventListener('sourceopen', () => {
