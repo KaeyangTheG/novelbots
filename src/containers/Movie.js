@@ -17,7 +17,7 @@ class Movie extends React.Component {
     super(props);
     this.rootRef = React.createRef();
     this.interactiveVideoRef = React.createRef();
-    this.rootNode = this.props.nodes[0];
+    this.rootNode = this.props.movie.nodes[0];
     this.state = {
       volume: 0.1,
       playing: false,
