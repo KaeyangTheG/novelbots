@@ -1,0 +1,19 @@
+.video-controls {
+  background-color: #333;
+  display: flex;
+  padding: 0 15px;
+  width: 100%;
+}
+
+.video-controls .icon-button {
+  margin-right: 30px;
+}
+
+.video-controls .video-control-btn {
+  color: #fff;
+  transition: transform 0.4s;
+}
+
+.video-controls .video-control-btn:hover {
+  transform: scale(1.4);
+}

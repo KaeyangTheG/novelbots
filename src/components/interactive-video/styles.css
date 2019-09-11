@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.container > video {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  outline: none;
+}
+
+.container > video::-webkit-media-controls {
+  display: none !important;
+}
+
+.overlay {
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.controls {
+  width: 500px;
+  max-width: 90vw;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.volume-ctrl {
+  display: flex;
+}
+
+.volume-ctrl input {
+  margin-left: 20px;
+}

@@ -1,0 +1,12 @@
+.volume-slider {
+  box-sizing: border-box;
+  display: flex;
+}
+
+.volume-slider .icon-container {
+  font-size: 100%;
+}
+
+.volume-slider .icon-container .icon-button {
+  margin-right: 0;
+}

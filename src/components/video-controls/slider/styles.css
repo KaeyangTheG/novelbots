@@ -1,0 +1,28 @@
+.slide-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  padding: 10px;
+}
+
+.slider {
+  background: red;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 95%;
+  height: 5px;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background: red;
+  cursor: pointer;
+  transform: scale(1.1);
+}
