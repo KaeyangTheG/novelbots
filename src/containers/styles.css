@@ -1,0 +1,17 @@
+.video-demo {
+  display: inline-block;
+  width: 640px;
+  max-width: 90vw;
+}
+
+.video-demo--fs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .video-demo {
+    margin: auto;
+  }
+}
