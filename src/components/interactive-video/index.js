@@ -8,7 +8,7 @@ const createVideoNodes = (videoNodes, assetRoot) => {
   });
   masterList.forEach(videoNode => {
     videoNode.children = 
-      videoNode.children.map(({index}) => masterList[index])
+      videoNode.children.map(({index}) => masterList[index - 1])
   });
   return masterList;
 };
