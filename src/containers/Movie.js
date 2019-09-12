@@ -17,7 +17,7 @@ class Movie extends React.Component {
     super(props);
     this.rootRef = React.createRef();
     this.interactiveVideoRef = React.createRef();
-    this.rootNode = this.props.movie.nodes[0];
+    this.nodes = props.movie.nodes;
     this.state = {
       volume: 0.1,
       playing: false,
@@ -87,7 +87,8 @@ class Movie extends React.Component {
       <div className={rootClass} ref={this.rootRef}>
         <InteractiveVideo
           ref={this.interactiveVideoRef}
-          rootNode={rootNode}
+          nodes={this.nodes}
+          assetRoot={`/public/assets/movies/timemachine/`}
           Choices={Choices}
           {...this.state} />
         <VideoControls>
@@ -122,4 +123,9 @@ class Movie extends React.Component {
   }
 }
 
-export default Movie;
+export default () => {
+  const { movie } = useRouteData();
+  return (
+    <Movie movie={movie} />
+  );
+}
