@@ -12,11 +12,6 @@ addPrefetchExcludes(['dynamic'])
 function App() {
   return (
     <Root>
-      <header className="container header">
-        <h1>
-          Novelbots
-        </h1>
-      </header>
       <div className="main">
         <React.Suspense fallback={<em>Loading...</em>}>
           <Router>

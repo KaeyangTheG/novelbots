@@ -77,6 +77,11 @@ class Lander extends React.Component {
 
     return (
       <>
+        <header className="container header">
+          <h1>
+            Novelbots
+          </h1>
+        </header>
         <div className="container">
           <h3>Interactive Films</h3>
           <Carousel>

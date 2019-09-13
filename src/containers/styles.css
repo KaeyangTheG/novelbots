@@ -1,7 +1,9 @@
 .video-demo {
   display: inline-block;
-  width: 640px;
-  max-width: 90vw;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  text-align: center;
 }
 
 .video-demo--fs {

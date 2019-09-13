@@ -174,7 +174,7 @@ class InteractiveVideo extends React.Component {
     const {choices, choiceDuration, showChoices, selected, duration} = this.state;
 
     return (
-      <div className="container">
+      <div className="video-container">
         <div className="overlay">
           <Choices
             choiceDuration={choiceDuration}
