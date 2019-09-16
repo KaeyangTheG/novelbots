@@ -90,6 +90,7 @@ class Movie extends React.Component {
           nodes={this.nodes}
           assetRoot={`/assets/movies/timemachine/`}
           Choices={Choices}
+          handleLoad={this.play}
           {...this.state} />
         <VideoControls>
           <IconButton icon={playing ? 'pause' : 'play'}

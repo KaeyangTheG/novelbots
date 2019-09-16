@@ -29,7 +29,7 @@ class InteractiveVideo extends React.Component {
 
   componentDidMount() {
     // set initial video properties
-    const {assetRoot, volume, nodes} = this.props;
+    const {assetRoot, volume, nodes, handleLoad} = this.props;
     const video = this.videoRef.current;
     video.volume = volume;
 
@@ -44,7 +44,8 @@ class InteractiveVideo extends React.Component {
       this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mimeCodec);
       this.sourceBuffer.mode = 'sequence';
 
-      this.loadNode(this.head);
+      this.loadNode(this.head)
+        .then(handleLoad);
     });
   }
 
@@ -75,7 +76,7 @@ class InteractiveVideo extends React.Component {
   }
 
   loadNode = node => {
-    node.init()
+    return node.init()
       .then(() => {
         const video = this.videoRef.current;
         this.sourceBuffer.appendBuffer(node.buf);
@@ -113,7 +114,7 @@ class InteractiveVideo extends React.Component {
               if (node.children.length) {
                 this.loadNode(node.children[(this.state.selected || 0) % node.children.length]);
               }
-            });
+            });    
         };
 
         this.sourceBuffer.addEventListener('updateend', handleUpdateEnd);

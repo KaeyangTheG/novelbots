@@ -45,6 +45,7 @@ class Lander extends React.Component {
           name={name}
           synopsis={synopsis}
           preview={preview}
+          link={`/movies/${id}`}
         />
       </>
     );

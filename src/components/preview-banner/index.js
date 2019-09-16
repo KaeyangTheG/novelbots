@@ -46,7 +46,7 @@ class PreviewBanner extends React.Component {
   }
 
   render () {
-    const {id, name, synopsis, preview={}} = this.props;
+    const {id, name, synopsis, preview={}, link} = this.props;
     const {poster, src} = preview;
     const {loading} = this.state;
 
@@ -55,7 +55,7 @@ class PreviewBanner extends React.Component {
         <div className="movie-info">
           <h3 className="movie-info__name">{name}</h3>
           <p className="movie-info__synopsis">{synopsis}</p>
-          <Button handleClick={() => {window.location =  `/movie/${id}`; }}>
+          <Button handleClick={() => { window.location = link; }}>
             <strong>Watch this</strong>
           </Button>
         </div>
