@@ -9,6 +9,12 @@ export default {
     
     return [
       {
+        path: '/',
+        getData: () => ({
+          movies,
+        }),
+      },
+      {
         path: '/movies',
         getData: () => ({
           movies,
