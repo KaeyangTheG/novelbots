@@ -30,23 +30,15 @@ class InteractiveVideo extends React.Component {
   componentDidMount() {
     // set initial video properties
     const {assetRoot, volume, nodes, handleLoad} = this.props;
-    const video = this.videoRef.current;
-    video.volume = volume;
+    this.videoRef.current.volume = volume;
 
     // begin loading the video nodes
     const videoNodes = createVideoNodes(nodes, assetRoot);
-    this.head = videoNodes[0];
+    this.nodes = videoNodes;
+    this.head = videoNodes[8];
     this.curr = this.head;
     
-    video.src = URL.createObjectURL(this.mediaSource);
-    this.timeRanges = [];
-    this.mediaSource.addEventListener('sourceopen', () => {
-      this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mimeCodec);
-      this.sourceBuffer.mode = 'sequence';
-
-      this.loadNode(this.head)
-        .then(handleLoad);
-    });
+    this.initializeVideo(this.head);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -73,6 +65,20 @@ class InteractiveVideo extends React.Component {
     } else {
       video.pause();
     }
+  }
+
+  initializeVideo = (rootNode) => {
+     this.mediaSource = new MediaSource();
+     this.videoRef.current.src = URL.createObjectURL(this.mediaSource);
+     this.timeRanges = [];
+     this.duration = 0;
+     this.mediaSource.addEventListener('sourceopen', () => {
+       this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mimeCodec);
+       this.sourceBuffer.mode = 'sequence';
+ 
+       this.loadNode(rootNode)
+         .then(handleLoad);
+     });
   }
 
   loadNode = node => {
@@ -113,10 +119,16 @@ class InteractiveVideo extends React.Component {
               this.duration = video.duration;
               if (node.children.length) {
                 this.loadNode(node.children[(this.state.selected || 0) % node.children.length]);
+              } else {
+                this.waitForVideoTime(Math.floor(video.duration - 2))
+                .then(() => {
+                  if(window.confirm('replay?')) {
+                    this.initializeVideo(this.nodes[0]);
+                  }
+                });
               }
-            });    
+            }); 
         };
-
         this.sourceBuffer.addEventListener('updateend', handleUpdateEnd);
       });
   }
@@ -125,7 +137,7 @@ class InteractiveVideo extends React.Component {
     return new Promise(resolve => {
       const video = this.videoRef.current;
       video.addEventListener('timeupdate', function handler () {
-        if (video.currentTime >= seconds) {
+        if (video.currentTime >= Math.ceil(seconds)) {
           video.removeEventListener('timeupdate', handler);
           resolve();
         }

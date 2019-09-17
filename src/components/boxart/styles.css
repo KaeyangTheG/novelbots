@@ -71,6 +71,10 @@
   transition: all 0.2s;
 }
 
+.boxart__focus-ring__play {
+  color: white;
+}
+
 .boxart__focus-ring__play:hover {
   background-color: rgba(20, 20, 20, 0.5);
   color: red;
