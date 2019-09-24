@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@reach/router": "^1.2.1",
     "axios": "^0.18.1",
+    "express": "^4.17.1",
     "json-server": "^0.15.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
@@ -22,7 +23,9 @@
     "react-static-plugin-reach-router": "^7.0.0",
     "react-static-plugin-sitemap": "^7.0.0",
     "react-static-plugin-source-filesystem": "^7.0.0",
-    "react-transition-group": "^4.3.0"
+    "react-transition-group": "^4.3.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "babel-eslint": "9.x",

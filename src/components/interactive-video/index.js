@@ -17,7 +17,6 @@ class InteractiveVideo extends React.Component {
   videoRef = React.createRef();
   timeRanges = [];
   mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
-  mediaSource = new MediaSource();
   sourceBuffer = null;
   duration = 0;
   state = {
@@ -68,7 +67,7 @@ class InteractiveVideo extends React.Component {
   }
 
   initializeVideo = (rootNode) => {
-     this.mediaSource = new MediaSource();
+     this.mediaSource = new window.MediaSource();
      this.videoRef.current.src = URL.createObjectURL(this.mediaSource);
      this.timeRanges = [];
      this.duration = 0;
