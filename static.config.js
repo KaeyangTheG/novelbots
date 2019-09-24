@@ -1,8 +1,6 @@
 import path from 'path'
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import axios from 'axios'
-const express = require('express')
-const http = require('http');
-const socketIO = require('socket.io');
 
 export default {
   getRoutes: async () => {
@@ -22,35 +20,43 @@ export default {
         getData: () => ({
           movies,
         }),
-        children: movies.map(
-          movie => {
-            return ({
-              path: `/${movie.id}`,
-              template: 'src/containers/Movie.js',
-              getData: () => ({
-                movie,
-              })
-            });
-          }
+        children: movies.reduce(
+          (pages, movie) => {
+            return pages.concat(
+              {
+                path: `/${movie.id}`,
+                template: 'src/containers/Movie.js',
+                getData: () => ({
+                  movie,
+                }),
+              },
+              {
+                path: `/${movie.id}/intro`,
+                template: 'src/containers/MovieIntro.js',
+                getData: () => ({
+                  movie,
+                }),
+              }
+            );
+          },
+          [],
         ),
       },
     ];
   },
   devServer: {
-    before: function() {
-      const server = http.Server(express());
-      const io = socketIO(server);
-      io.on('connection', socket => {});
-      server.listen(4008, () => {
-        console.log('socket io listening on port 4008');
-      });
+    before: function () {
+      const mongod = new MongoMemoryServer();
     },
     proxy: {
-      "/api": {
+      "/api/movies": {
         "target": "http://localhost:3008",
       },
+      "/api": {
+        "target": "http://localhost:5000",
+      },
       '/socket.io': {
-        target: 'http://localhost:4008',
+        target: 'http://localhost:5000',
         ws: true
       }
     },

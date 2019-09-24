@@ -18,7 +18,10 @@ class Lander extends React.Component {
   componentDidMount() {
     console.log('test', io);
     const socket = io('http://localhost:3000');
-    socket.on('message', (data) => console.log(data));
+    socket.on(
+      'message',
+      (data) => console.log(data)
+    );
   }
 
   render() {

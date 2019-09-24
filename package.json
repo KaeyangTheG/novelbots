@@ -17,6 +17,7 @@
     "axios": "^0.18.1",
     "express": "^4.17.1",
     "json-server": "^0.15.1",
+    "mongoose": "^5.7.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-static": "^7.0.0",
@@ -36,6 +37,7 @@
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
+    "mongodb-memory-server": "^5.2.5",
     "serve": "10.1.2"
   },
   "proxy": "http://localhost:3008"
