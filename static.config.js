@@ -1,12 +1,9 @@
 import path from 'path'
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import axios from 'axios'
+const data = require('./db.json');
 
 export default {
   getRoutes: async () => {
-    const { data: movies } = await axios.get(
-      'http://localhost:3008/movies'
-    );
+    const { movies } = data;
     
     return [
       {
@@ -45,13 +42,7 @@ export default {
     ];
   },
   devServer: {
-    before: function () {
-      const mongod = new MongoMemoryServer();
-    },
     proxy: {
-      "/api/movies": {
-        "target": "http://localhost:3008",
-      },
       "/api": {
         "target": "http://localhost:5000",
       },

@@ -1,3 +1,4 @@
+
 module.exports = function (app) {
     app.post('/api/sessions', function(req, res) {
         res.send(200, {
@@ -12,7 +13,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/session/:sessionId/players', function(req, res) {
-
+        
     });
 
     app.post('/api/session/:sessionId/players', function(req, res) {

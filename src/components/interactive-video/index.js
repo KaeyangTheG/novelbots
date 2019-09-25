@@ -76,7 +76,7 @@ class InteractiveVideo extends React.Component {
        this.sourceBuffer.mode = 'sequence';
  
        this.loadNode(rootNode)
-         .then(handleLoad);
+         .then(this.props.handleLoad);
      });
   }
 
@@ -86,13 +86,15 @@ class InteractiveVideo extends React.Component {
         const video = this.videoRef.current;
         this.sourceBuffer.appendBuffer(node.buf);
 
-        const handleUpdateEnd = () => {
-          this.timeRanges.push({
-            start: this.timeRanges.length
-              ? this.timeRanges[this.timeRanges.length - 1].end
-              : 0,
-            end: this.mediaSource.duration,
+        return new Promise(resolve => {
+          this.sourceBuffer.addEventListener('updateend', () => {
+            resolve();
+            handleUpdateEnd.call(this);
           });
+        });
+
+        function handleUpdateEnd () {
+          this.timeRanges.push(this.getVideoNodeTimeRanges(node));
 
           this.sourceBuffer.removeEventListener('updateend', handleUpdateEnd);
           node.children.forEach(child => child.init());
@@ -127,9 +129,29 @@ class InteractiveVideo extends React.Component {
                 });
               }
             }); 
-        };
-        this.sourceBuffer.addEventListener('updateend', handleUpdateEnd);
+        };        
       });
+  }
+
+  getVideoNodeTimeRanges = node => {
+    const start = this.timeRanges.length
+      ? this.timeRanges[this.timeRanges.length - 1].end
+      : 0;
+    
+    if (!node.startChoice) {
+      return [{
+        start,
+        end: this.mediaSource.duration,
+      }];
+    }
+
+    return [{
+      start,
+      end: node.startChoice + start,
+    }, {
+      start: node.endChoice + start,
+      end: this.mediaSource.duration,
+    }];
   }
 
   waitForVideoTime = (seconds) => {
