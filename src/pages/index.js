@@ -3,9 +3,7 @@ import Boxart from '../components/boxart';
 import Carousel from '../components/carousel';
 import PreviewBanner from '../components/preview-banner';
 
-import io from 'socket.io-client';
 import { useRouteData } from 'react-static';
-
 
 class Lander extends React.Component {
   constructor(props) {
@@ -13,15 +11,6 @@ class Lander extends React.Component {
     this.state = {
       selected: 0,
     };
-  }
-
-  componentDidMount() {
-    console.log('test', io);
-    const socket = io('http://localhost:3000');
-    socket.on(
-      'message',
-      (data) => console.log(data)
-    );
   }
 
   render() {

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from '../components/Router';
 import { useRouteData } from 'react-static';
+import { socketHelper, SOCKET_EVENTS } from '../util/socket';
 
 class MovieIntro extends React.Component {
     state = {
@@ -12,6 +13,10 @@ class MovieIntro extends React.Component {
             .then(({data}) => {
                 this.setState({
                     sessionId: data.sessionId,
+                });
+                socketHelper.init();
+                socketHelper.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
+                    console.log('player joined!', data);
                 });
             });
     }
