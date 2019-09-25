@@ -87,26 +87,14 @@ class InteractiveVideo extends React.Component {
         const video = this.videoRef.current;
         this.sourceBuffer.appendBuffer(node.buf);
 
-        return new Promise(resolve => {
-          this.sourceBuffer.addEventListener('updateend', () => {
-            resolve();
-            handleUpdateEnd.call(this, node);
-          });
-        });
-
-        function handleUpdateEnd (node) {
-          console.log('in here', nodeIndex);
+        const handleUpdateEnd  = () => {
           this.timeRanges = this.timeRanges.concat(this.getNewTimeRanges(node, nodeIndex));
-          console.log('timeranges', this.timeRanges);
           this.sourceBuffer.removeEventListener('updateend', handleUpdateEnd);
           node.children.forEach(child => child.init());
-          
-          console.log('index: ' + node.index, ', children: ', node.children.length);
-          const startChoiceTime = this.getStartChoiceTime(nodeIndex);
-          const endChoiceTime = this.getEndChoiceTime(nodeIndex);
+
           (node.children.length <= 1
             ? Promise.resolve()
-            : this.waitForVideoTime(startChoiceTime)
+            : this.waitForVideoTime(this.getStartChoiceTime(nodeIndex))
                 .then(() => this.setStateWithPromise(
                   {
                     choices: node.children,
@@ -116,7 +104,7 @@ class InteractiveVideo extends React.Component {
                   }
                 ))
                 .then(
-                  () => this.waitForVideoTime(endChoiceTime)
+                  () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
                 )
                 .then(
                   () => this.setStateWithPromise({showChoices: false})
@@ -134,7 +122,9 @@ class InteractiveVideo extends React.Component {
                 });
               }
             }); 
-        };        
+        };
+
+        this.sourceBuffer.addEventListener('updateend', handleUpdateEnd);
       });
   }
 
@@ -144,13 +134,11 @@ class InteractiveVideo extends React.Component {
 
   getStartChoiceTime = index => {
     const entry = this.getChoiceIndex(index);
-    console.log('startTime', entry.start);
     return entry.start;
   }
 
   getEndChoiceTime = index => {
     const entry = this.getChoiceIndex(index);
-    console.log('endTime', entry.end);
     return entry.end;
   }
 
@@ -205,12 +193,12 @@ class InteractiveVideo extends React.Component {
 
     for (let i = 0; i < this.timeRanges.length; i++) {
       const {start, end} = this.timeRanges[i];
-      if (time >= start && time <= end) {
+      if (time > start && time < end) {
         return i;
       }
     }
 
-    return 0;
+    return -1;
   };
 
   incrementTime = (increment = 10) => {
@@ -226,10 +214,17 @@ class InteractiveVideo extends React.Component {
 
     const currentIndex = this.getTimeIndex(currentTime);
     const adjustedIndex= this.getTimeIndex(adjustedTime);
+    
+    const dontDoIt = currentIndex === -1 || 
+      adjustedIndex === -1 || 
+      this.timeRanges[currentIndex].freeze ||
+      this.timeRanges[adjustedIndex].freeze ||
+      currentIndex !== adjustedIndex;
 
-    if (currentIndex === adjustedIndex) {
-      this.videoRef.current.currentTime = adjustedTime;
+    if (dontDoIt) {
+      return;
     }
+    this.videoRef.current.currentTime = adjustedTime;
   }
 
   render () {
