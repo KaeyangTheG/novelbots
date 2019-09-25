@@ -25,6 +25,7 @@
     "react-static-plugin-sitemap": "^7.0.0",
     "react-static-plugin-source-filesystem": "^7.0.0",
     "react-transition-group": "^4.3.0",
+    "shortid": "^2.2.15",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
