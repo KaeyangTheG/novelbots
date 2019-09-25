@@ -28,6 +28,21 @@ const iconMap = {
   'volumeMute': faVolumeMute,
 };
 
+const debounce = function(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 export const Icon = ({className, icon }) => (
   <FontAwesomeIcon className={className || ''} icon={iconMap[icon]} />
 );
@@ -36,10 +51,11 @@ export const IconButton = ({
   buttonClassName,
   iconClassName,
   icon,
-  handleOnClick
+  handleOnClick,
+  debounceRate = 0,
 }) => (
   <button className={`icon-button ${buttonClassName || ''}`}
-    onClick={handleOnClick}>
+    onClick={debounce(handleOnClick, debounceRate)}>
     <Icon className={iconClassName || ''} icon={icon} />
   </button>
 );

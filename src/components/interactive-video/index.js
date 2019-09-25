@@ -89,15 +89,17 @@ class InteractiveVideo extends React.Component {
         return new Promise(resolve => {
           this.sourceBuffer.addEventListener('updateend', () => {
             resolve();
-            handleUpdateEnd.call(this);
+            handleUpdateEnd.call(this, node);
           });
         });
 
-        function handleUpdateEnd () {
-          this.timeRanges.push(this.getVideoNodeTimeRanges(node));
+        function handleUpdateEnd (node) {
+          this.timeRanges = this.timeRanges.concat(this.getNewTimeRanges(node));
 
           this.sourceBuffer.removeEventListener('updateend', handleUpdateEnd);
           node.children.forEach(child => child.init());
+          
+          console.log('index: ' + node.index, ', children: ', node.children.length);
 
           (node.children.length <= 1
             ? Promise.resolve()
@@ -133,24 +135,28 @@ class InteractiveVideo extends React.Component {
       });
   }
 
-  getVideoNodeTimeRanges = node => {
+  getNewTimeRanges = node => {
     const start = this.timeRanges.length
       ? this.timeRanges[this.timeRanges.length - 1].end
       : 0;
     
-    if (!node.startChoice) {
+    if (!node.startChoice || !node.endChoice) {
       return [{
         start,
-        end: this.mediaSource.duration,
+        end: start + node.duration,
       }];
     }
 
     return [{
       start,
-      end: node.startChoice + start,
+      end: start + node.startChoice,
     }, {
-      start: node.endChoice + start,
-      end: this.mediaSource.duration,
+      start: start + node.startChoice,
+      end: start + node.endChoice,
+      freeze: true,
+    }, {
+      start: start + node.endChoice,
+      end: start + node.duration,
     }];
   }
 

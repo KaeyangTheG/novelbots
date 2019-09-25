@@ -100,10 +100,12 @@ class Movie extends React.Component {
           <IconButton icon="stepBackward"
             className="video-control-btn"
             handleOnClick={this.stepBackward}
+            debounceRate={250}
           />
           <IconButton icon="stepForward"
             className="video-control-btn"
             handleOnClick={this.stepForward}
+            debounceRate={250}
           />
           <VolumeSlider
             min={0}
