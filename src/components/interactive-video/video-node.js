@@ -5,6 +5,7 @@ class VideoNode {
     endChoice,
     startChoice,
     assetRoot,
+    duration,
     withInit = false,
   }) {
     this.index = index;
@@ -13,6 +14,7 @@ class VideoNode {
     this.endChoice = endChoice;
     this.startChoice = startChoice;
     this.assetRoot = assetRoot;
+    this.duration = duration;
     if (withInit) {
       this.init();
     }

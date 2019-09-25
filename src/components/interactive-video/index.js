@@ -69,8 +69,9 @@ class InteractiveVideo extends React.Component {
   initializeVideo = (rootNode) => {
      this.mediaSource = new window.MediaSource();
      this.videoRef.current.src = URL.createObjectURL(this.mediaSource);
-     this.timeRanges = [];
+     window.timeRanges = this.timeRanges = [];
      this.duration = 0;
+     this.nodeIndex = null;
      this.mediaSource.addEventListener('sourceopen', () => {
        this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mimeCodec);
        this.sourceBuffer.mode = 'sequence';
@@ -80,7 +81,7 @@ class InteractiveVideo extends React.Component {
      });
   }
 
-  loadNode = node => {
+  loadNode = (node, nodeIndex = 0) => {
     return node.init()
       .then(() => {
         const video = this.videoRef.current;
@@ -94,16 +95,18 @@ class InteractiveVideo extends React.Component {
         });
 
         function handleUpdateEnd (node) {
-          this.timeRanges = this.timeRanges.concat(this.getNewTimeRanges(node));
-
+          console.log('in here', nodeIndex);
+          this.timeRanges = this.timeRanges.concat(this.getNewTimeRanges(node, nodeIndex));
+          console.log('timeranges', this.timeRanges);
           this.sourceBuffer.removeEventListener('updateend', handleUpdateEnd);
           node.children.forEach(child => child.init());
           
           console.log('index: ' + node.index, ', children: ', node.children.length);
-
+          const startChoiceTime = this.getStartChoiceTime(nodeIndex);
+          const endChoiceTime = this.getEndChoiceTime(nodeIndex);
           (node.children.length <= 1
             ? Promise.resolve()
-            : this.waitForVideoTime(node.startChoice + this.duration)
+            : this.waitForVideoTime(startChoiceTime)
                 .then(() => this.setStateWithPromise(
                   {
                     choices: node.children,
@@ -113,7 +116,7 @@ class InteractiveVideo extends React.Component {
                   }
                 ))
                 .then(
-                  () => this.waitForVideoTime(node.endChoice + this.duration)
+                  () => this.waitForVideoTime(endChoiceTime)
                 )
                 .then(
                   () => this.setStateWithPromise({showChoices: false})
@@ -121,7 +124,7 @@ class InteractiveVideo extends React.Component {
             .then(() => {
               this.duration = video.duration;
               if (node.children.length) {
-                this.loadNode(node.children[(this.state.selected || 0) % node.children.length]);
+                this.loadNode(node.children[(this.state.selected || 0) % node.children.length], nodeIndex + 1);
               } else {
                 this.waitForVideoTime(Math.floor(video.duration - 2))
                 .then(() => {
@@ -135,26 +138,46 @@ class InteractiveVideo extends React.Component {
       });
   }
 
-  getNewTimeRanges = node => {
+  getChoiceIndex = index => {
+    return this.timeRanges.find(item => item.index === index && item.freeze);
+  }
+
+  getStartChoiceTime = index => {
+    const entry = this.getChoiceIndex(index);
+    console.log('startTime', entry.start);
+    return entry.start;
+  }
+
+  getEndChoiceTime = index => {
+    const entry = this.getChoiceIndex(index);
+    console.log('endTime', entry.end);
+    return entry.end;
+  }
+
+  getNewTimeRanges = (node, index) => {
     const start = this.timeRanges.length
       ? this.timeRanges[this.timeRanges.length - 1].end
       : 0;
     
     if (!node.startChoice || !node.endChoice) {
       return [{
+        index,
         start,
         end: start + node.duration,
       }];
     }
 
     return [{
+      index,
       start,
       end: start + node.startChoice,
     }, {
+      index,
       start: start + node.startChoice,
       end: start + node.endChoice,
       freeze: true,
     }, {
+      index,
       start: start + node.endChoice,
       end: start + node.duration,
     }];
