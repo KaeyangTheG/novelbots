@@ -26,8 +26,12 @@ const SOCKET_EVENTS = {
 };
 
 io.on('connection', socket => {
-  socket.on(SOCKET_EVENTS.PLAYER_JOINED, function(data) {
-    io.emit(SOCKET_EVENTS.PLAYER_JOINED, data);
-  });
+  Object.keys(SOCKET_EVENTS)
+    .forEach(eventName => {
+      socket.on(eventName, data => {
+        console.log('server received', eventName);
+        io.emit(eventName, data);
+      });
+    });
 });
 

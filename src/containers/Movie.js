@@ -104,7 +104,7 @@ class Movie extends React.Component {
   handleShowChoices = choices => {
     console.log('choices shown!', choices);
     socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
-      // this.setState(({votes}) => votes.concat(data));
+      this.setState(({votes}) => votes.concat(data));
       console.log('a vote!', data);
     });
 
@@ -118,17 +118,15 @@ class Movie extends React.Component {
 
   handleVoteEnding = () => {
     console.log('setting the choice to index 1!!');
-    // socketHelper.off(SOCKET_EVENTS.PLAYER_VOTED);
-    // socketHelper.emit(SOCKET_EVENTS.REMOVE_CHOICE, choices);
-    // this.interactiveVideoRef.current.setChoice(getMaxVote(this.state.votes));
-    this.interactiveVideoRef.current.setChoice(1);
+    socketHelper.off(SOCKET_EVENTS.PLAYER_VOTED);
+    socketHelper.emit(SOCKET_EVENTS.REMOVE_CHOICE);
+    this.interactiveVideoRef.current.setChoice(getMaxVote(this.state.votes));
   }
 
   handleRemoveChoices = () => {
-    // this.setState({
-    //   votes: [],
-    // });
-    console.log('remove choices!');
+    this.setState({
+      votes: [],
+    });
   }
 
   render () {
@@ -145,7 +143,9 @@ class Movie extends React.Component {
             ? (
               <ul className="votes">
                 {
-                  votes.map(vote => <li>{vote}</li>)
+                  votes.map(
+                    vote => <li>{vote}</li>
+                  )
                 }
               </ul>
             )

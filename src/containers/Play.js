@@ -10,6 +10,7 @@ class Play extends React.Component {
         success: '',
         submitted: false,
         gameStarted: false,
+        choices: null,
     };
     componentDidMount() {
         // verify that the session id in the param is valid
@@ -45,6 +46,17 @@ class Play extends React.Component {
                     this.setState({
                         success: `You are in ${displayName}! Waiting for the film to begin`,
                     });
+                    socketHelper.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
+                        console.log('so... we here', choices);
+                        this.setState({
+                            choices,
+                        });
+                    });
+                    socketHelper.on(SOCKET_EVENTS.REMOVE_CHOICE, () => {
+                        this.setState({
+                            choices: null,
+                        });
+                    });
                 })
                 // .catch(() => {
                 //     this.setState({
@@ -58,9 +70,15 @@ class Play extends React.Component {
             displayName: event.target.value,
         });
     }
+    handleChoiceClick = (index) => {
+        socketHelper.emit(
+            SOCKET_EVENTS.PLAYER_VOTED,
+            {index},
+        );
+    }
     render() {
         const {sessionId} = this.props;
-        const {displayName, verifiedSession, error, submitted, success} = this.state;
+        const {displayName, verifiedSession, error, submitted, success, choices} = this.state;
         
         if (error !== '') {
             return <div>{error}</div>;
@@ -74,9 +92,9 @@ class Play extends React.Component {
             <div>
                 <h2>Play along!</h2>
                 <h4>Session id: {sessionId}</h4>
-                <p>{success}</p>
+
                 {
-                    success === ''
+                    success === '' && choices === null
                         ? (
                             <form onSubmit={this.handleSubmit.bind(this)}>
                                 <label for="displayname">Display name: </label><br />
@@ -84,8 +102,24 @@ class Play extends React.Component {
                                     onChange={this.handleDisplaynameChange} /><br />
                                 <button disabled={submitted}>Submit</button>
                             </form>
-                        ) : null
+                        ) : Array.isArray(choices)
+                            ? (
+                                <div>
+                                    {
+                                        choices.map((index, title) => (
+                                            <div>
+                                                <button onClick={
+                                                    () => this.handleChoiceClick(index)
+                                                    }>
+                                                    {title}
+                                                </button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            ) : <p>{success}</p>          
                 }
+
             </div>
         );
     }
