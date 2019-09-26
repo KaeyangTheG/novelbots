@@ -82,6 +82,8 @@ class InteractiveVideo extends React.Component {
   }
 
   loadNode = (node, nodeIndex = 0) => {
+    const {handleShowChoices, handleVoteEnding, handleRemoveChoices} = this.props;
+
     return node.init()
       .then(() => {
         const video = this.videoRef.current;
@@ -95,19 +97,26 @@ class InteractiveVideo extends React.Component {
           (node.children.length <= 1
             ? Promise.resolve()
             : this.waitForVideoTime(this.getStartChoiceTime(nodeIndex))
-                .then(() => this.setStateWithPromise(
-                  {
-                    choices: node.children,
-                    showChoices: true,
-                    selected: null,
-                    choiceDuration: node.endChoice - node.startChoice,
+                .then(() => this.setStateWithPromise({
+                  choices: node.children,
+                  showChoices: true,
+                  selected: null,
+                  choiceDuration: node.endChoice - node.startChoice,
+                }).then(() => {
+                  if (typeof handleShowChoices === 'function') {
+                    handleShowChoices(node.children);
                   }
-                ))
+                }))
+                .then(() => 
+                  this.waitForVideoTime(this.getEndChoiceTime(nodeIndex) - 1)
+                    .then(handleVoteEnding)
+                )
                 .then(
                   () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
                 )
                 .then(
                   () => this.setStateWithPromise({showChoices: false})
+                    .then(handleRemoveChoices)
                 ))
             .then(() => {
               this.duration = video.duration;
@@ -201,6 +210,12 @@ class InteractiveVideo extends React.Component {
     return -1;
   };
 
+  setChoice = (selected) => {
+    this.setState({
+      selected,
+    });
+  }
+
   incrementTime = (increment = 10) => {
     const {showChoices} = this.state;
     const {playing} = this.props;
@@ -228,7 +243,7 @@ class InteractiveVideo extends React.Component {
   }
 
   render () {
-    const {Choices, sharedViewing } = this.props;
+    const {Choices, sharedViewing} = this.props;
     const {choices, choiceDuration, showChoices, selected, duration} = this.state;
 
     return (

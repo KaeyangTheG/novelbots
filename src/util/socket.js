@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-let socket = null;
+let socket = io();
 let handlers = {};
 
 export const SOCKET_EVENTS = {
@@ -10,30 +10,14 @@ export const SOCKET_EVENTS = {
     REMOVE_CHOICE: 'REMOVE_CHOICE',
 };
 
-const init = () => {
-    if (socket === null) {
-        socket = io();
-    }
-    return socket;
-}
-
 export const socketHelper = {
-    get: () => {
-        return init();
-    },
     emit: (eventName, data) => {
-        if (!socket) {
-            init();
-        }
         // if (!(eventName in handlers)) {
         //     throw new Error(`no handler(s) for ${eventName}.  Call add first`);
         // }
         socket.emit(eventName, data);
     },
     on: (eventName, handler) => {       
-        if (!socket) {
-            init();
-        }
         if (Array.isArray(handlers[eventName])) {
             handlers[eventName] = handlers[eventName].concat(handler);
         } else {
@@ -43,10 +27,11 @@ export const socketHelper = {
             });
         }      
     },
+    off: (eventName) => {
+        socket.off(eventName);
+        delete handlers[eventName];
+    },
     clear: () => {
-        if (!socket) {
-            return;
-        }
         Object.keys(handler).forEach(key => socket.off(key));
         handlers = {};
     }

@@ -6,8 +6,26 @@ import { IconButton } from '../components/icon';
 import VolumeSlider from '../components/video-controls/volume-slider';
 import PlaybackSelect from '../components/video-controls/playback-select';
 import { useRouteData } from 'react-static'
+import {socketHelper, SOCKET_EVENTS} from '../util/socket';
 
 import './styles.css';
+
+const getMaxVote = votes => {
+  if (!votes || !votes.length) {
+    return 0;
+  }
+
+  const tally = {};
+
+  for(let i = 0; i < votes.length; i++) {
+    let count = tally[votes[i].index] || 0;
+    tally[votes[i].index] = count + 1;
+  }
+
+  return Object.keys(tally).sort((a, b) => {
+    return tally[b] - tally[a];
+  })[0];
+};
 
 class Movie extends React.Component {
   rootRef = React.createRef();
@@ -82,9 +100,36 @@ class Movie extends React.Component {
     this.interactiveVideoRef.current.incrementTime(-10);
   }
 
+  handleShowChoices = choices => {
+    console.log('choices shown!', choices);
+    // socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
+    //   this.setState(({votes}) => votes.concat(data));
+    // });
+    // socketHelper.emit(SOCKET_EVENTS.SHOW_CHOICE, choices);
+  }
+
+  handleVoteEnding = () => {
+    console.log('setting the choice to index 1!!');
+    // socketHelper.off(SOCKET_EVENTS.PLAYER_VOTED);
+    // socketHelper.emit(SOCKET_EVENTS.REMOVE_CHOICE, choices);
+    // this.interactiveVideoRef.current.setChoice(getMaxVote(this.state.votes));
+    this.interactiveVideoRef.current.setChoice(1);
+  }
+
+  handleRemoveChoices = () => {
+    // this.setState({
+    //   votes: [],
+    // });
+    console.log('remove choices!');
+  }
+
   render () {
     const { playing, volume, playbackRate, fullScreen, sharedViewing, votes } = this.state;
     const rootClass = 'video-demo' + (fullScreen ? '--fs' : '');
+    const handleShowChoices = sharedViewing ? this.handleShowChoices : null;
+    const handleRemoveChoices = sharedViewing ? this.handleRemoveChoices : null;
+    const handleVoteEnding = sharedViewing ? this.handleVoteEnding : null;
+
     return (
       <div className={rootClass} ref={this.rootRef}>
         {
@@ -104,6 +149,9 @@ class Movie extends React.Component {
           assetRoot={`/assets/movies/timemachine/`}
           Choices={Choices}
           handleLoad={this.play}
+          handleShowChoices={this.handleShowChoices}
+          handleVoteEnding={this.handleVoteEnding}
+          handleRemoveChoices={this.handleRemoveChoices}
           sharedViewing = {!!this.props.sessionId}
           {...this.state} />
         <VideoControls>

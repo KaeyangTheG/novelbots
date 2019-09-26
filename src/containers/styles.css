@@ -12,6 +12,14 @@
   justify-content: center;
 }
 
+.video-demo .votes {
+  width: 30vw;
+  min-height: 20vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 @media (max-width: 768px) {
   .video-demo {
     margin: auto;
