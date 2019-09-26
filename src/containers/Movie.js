@@ -23,6 +23,8 @@ class Movie extends React.Component {
       playing: false,
       playbackRate: 1,
       fullScreen: false,
+      sharedViewing: !!this.props.sessionId,
+      votes: [],
     };
   }
 
@@ -81,16 +83,28 @@ class Movie extends React.Component {
   }
 
   render () {
-    const { playing, volume, playbackRate, fullScreen } = this.state;
+    const { playing, volume, playbackRate, fullScreen, sharedViewing, votes } = this.state;
     const rootClass = 'video-demo' + (fullScreen ? '--fs' : '');
     return (
       <div className={rootClass} ref={this.rootRef}>
+        {
+          votes.length > 0
+            ? (
+              <ul className="votes">
+                {
+                  votes.map(vote => <li>{vote}</li>)
+                }
+              </ul>
+            )
+            : null
+        }
         <InteractiveVideo
           ref={this.interactiveVideoRef}
           nodes={this.nodes}
           assetRoot={`/assets/movies/timemachine/`}
           Choices={Choices}
           handleLoad={this.play}
+          sharedViewing = {!!this.props.sessionId}
           {...this.state} />
         <VideoControls>
           <IconButton icon={playing ? 'pause' : 'play'}
@@ -126,9 +140,11 @@ class Movie extends React.Component {
   }
 }
 
-export default () => {
-  const { movie } = useRouteData();
+export default ({ movie, sessionId }) => {
+  if (!movie) {
+    movie = useRouteData().movie;
+  }
   return (
-    <Movie movie={movie} />
+    <Movie movie={movie} sessionId={sessionId} />
   );
 }

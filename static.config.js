@@ -13,31 +13,30 @@ export default {
         }),
       },
       {
+        path: '/games',
+        getData: () => ({
+          movies,
+        }),
+        children: movies.map(movie => ({
+            path: `/${movie.id}`,
+            template: 'src/containers/MovieIntro.js',
+            getData: () => ({
+              movie,
+            }),
+        })),
+      },
+      {
         path: '/movies',
         getData: () => ({
           movies,
         }),
-        children: movies.reduce(
-          (pages, movie) => {
-            return pages.concat(
-              {
-                path: `/${movie.id}`,
-                template: 'src/containers/Movie.js',
-                getData: () => ({
-                  movie,
-                }),
-              },
-              {
-                path: `/${movie.id}/intro`,
-                template: 'src/containers/MovieIntro.js',
-                getData: () => ({
-                  movie,
-                }),
-              }
-            );
-          },
-          [],
-        ),
+        children: movies.map(movie => ({
+          path: `/${movie.id}`,
+          template: 'src/containers/Movie.js',
+          getData: () => ({
+            movie,
+          }),
+        })),
       },
     ];
   },

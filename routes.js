@@ -1,6 +1,7 @@
 const Session = require('./models/session');
 const Player = require('./models/player');
 const shortid = require('shortid');
+const data = require('./db.json');
 
 module.exports = function (app) {
     app.post('/api/sessions', function(req, res) {
@@ -31,6 +32,21 @@ module.exports = function (app) {
                 res.send(200, session);
             }
         });
+    });
+
+    app.get('/api/movies', function(req, res) {
+        res.send(200, data);
+    });
+
+    app.get('/api/movies/:id', function(req, res) {
+        const { id } = req.params;
+
+        const movie = data.movies.find(movie => movie.id == id);
+        if (!movie) {
+            res.send(404, 'Movie not found');
+            return;
+        }
+        res.send(200, movie);
     });
 
     app.post('/api/sessions/:sessionId/players', function(req, res) {

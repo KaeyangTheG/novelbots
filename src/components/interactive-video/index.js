@@ -228,7 +228,7 @@ class InteractiveVideo extends React.Component {
   }
 
   render () {
-    const {Choices} = this.props;
+    const {Choices, sharedViewing } = this.props;
     const {choices, choiceDuration, showChoices, selected, duration} = this.state;
 
     return (
@@ -243,7 +243,7 @@ class InteractiveVideo extends React.Component {
             choices={choices}
             selected={selected}
             handleOnClick= {
-              selected === null
+              selected === null && !sharedViewing
                 ? index => this.setState({selected: index})
                 : null
             }

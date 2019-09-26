@@ -10,16 +10,20 @@ export const SOCKET_EVENTS = {
     REMOVE_CHOICE: 'REMOVE_CHOICE',
 };
 
-export const socketHelper = {
-    init: () => {
-        if (socket != null) {
-            return;
-        }
+const init = () => {
+    if (socket === null) {
         socket = io();
+    }
+    return socket;
+}
+
+export const socketHelper = {
+    get: () => {
+        return init();
     },
     emit: (eventName, data) => {
         if (!socket) {
-            this.init();
+            init();
         }
         // if (!(eventName in handlers)) {
         //     throw new Error(`no handler(s) for ${eventName}.  Call add first`);
@@ -28,7 +32,7 @@ export const socketHelper = {
     },
     on: (eventName, handler) => {       
         if (!socket) {
-            this.init();
+            init();
         }
         if (Array.isArray(handlers[eventName])) {
             handlers[eventName] = handlers[eventName].concat(handler);

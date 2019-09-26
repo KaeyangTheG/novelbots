@@ -7,18 +7,29 @@ class Play extends React.Component {
         displayName: '',
         verifiedSession: false,
         error: '',
+        success: '',
         submitted: false,
+        gameStarted: false,
     };
     componentDidMount() {
         // verify that the session id in the param is valid
         // hide everything until this checks out
         // GET /api/sessions/{id}/status
+        const {sessionId} = this.props;
         axios.get(`/api/sessions/${sessionId}`)
             .then(() => {
-                this.setState({verifiedSession: true, error: false});
+                this.setState({
+                    verifiedSession: true,
+                    error: '',
+                    success: ''
+                });
             })
             .catch(() => {
-                this.setState({verifiedSession: false, error: 'Session is not valid'});
+                this.setState({
+                    verifiedSession: false,
+                    error: 'Session is not valid',
+                    success: '',
+                });
             });
     }
     handleSubmit (event) {
@@ -27,20 +38,29 @@ class Play extends React.Component {
             submitted: true,
         }, () => {
             const {sessionId} = this.props;
+            const {displayName} = this.state;
             axios.post(`/api/sessions/${sessionId}/players`, { displayName })
                 .then(() => {
                     socketHelper.emit(SOCKET_EVENTS.PLAYER_JOINED, { displayName });
-                })
-                .catch(() => {
                     this.setState({
-                        error: 'Could not join the session :('
+                        success: `You are in ${displayName}! Waiting for the film to begin`,
                     });
-                });
+                })
+                // .catch(() => {
+                //     this.setState({
+                //         error: 'Could not join the session :('
+                //     });
+                // });
+        });
+    }
+    handleDisplaynameChange = event => {
+        this.setState({
+            displayName: event.target.value,
         });
     }
     render() {
         const {sessionId} = this.props;
-        const {displayName, verifiedSession, error, submitted} = this.state;
+        const {displayName, verifiedSession, error, submitted, success} = this.state;
         
         if (error !== '') {
             return <div>{error}</div>;
@@ -54,11 +74,18 @@ class Play extends React.Component {
             <div>
                 <h2>Play along!</h2>
                 <h4>Session id: {sessionId}</h4>
-                <form onSubmit={this.handleSubmit.bind(this)}>
-                    <label for="displayname">Display name: </label>
-                    <input id="displayname" type="text" value={displayName} />
-                    <button disabled={submitted}>Submit</button>
-                </form>
+                <p>{success}</p>
+                {
+                    success === ''
+                        ? (
+                            <form onSubmit={this.handleSubmit.bind(this)}>
+                                <label for="displayname">Display name: </label><br />
+                                <input id="displayname" type="text" value={displayName}
+                                    onChange={this.handleDisplaynameChange} /><br />
+                                <button disabled={submitted}>Submit</button>
+                            </form>
+                        ) : null
+                }
             </div>
         );
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 import { Link } from '../components/Router';
 import { useRouteData } from 'react-static';
 import { socketHelper, SOCKET_EVENTS } from '../util/socket';
@@ -7,6 +8,7 @@ import { socketHelper, SOCKET_EVENTS } from '../util/socket';
 class MovieIntro extends React.Component {
     state = {
         sessionId: null,
+        players: [],
     }
     componentDidMount() {
         axios.post('/api/sessions')
@@ -14,15 +16,18 @@ class MovieIntro extends React.Component {
                 this.setState({
                     sessionId: data.sessionId,
                 });
-                socketHelper.init();
                 socketHelper.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
-                    console.log('player joined!', data);
+                    this.setState(({players}) => ({
+                        players: players.concat(data),
+                    }));
                 });
             });
+        // DEBUGGING
+        window.socket = io();
     }
     render() {
         const { id, name, synopsis, thumbnail } = this.props.movie;
-        const { sessionId } = this.state;
+        const { sessionId, players } = this.state;
         return (
             sessionId
                 ? (
@@ -37,6 +42,23 @@ class MovieIntro extends React.Component {
                                 Visit <Link to={`/play/${sessionId}`}>{`${window.location.host}/play/${sessionId}`}</Link> to play!
                             </h3>
                         </div>
+                        <h3>Audience members joined:</h3>
+                        {
+                            players.length > 0
+                                ? (
+                                    <ul>
+                                        {
+                                            players.map(
+                                                ({displayName}) => <li>{displayName}</li>
+                                            ) 
+                                        }   
+                                    </ul>
+                                )
+                                : null
+                        }
+                        <Link to={`/movies/${id}/${sessionId}`}>
+                            Begin the film!
+                        </Link>
                     </div>
                 )
                 : (

@@ -18,5 +18,16 @@ server.listen(5000, function () {
   console.log('Starting server on port 5000');
 });
 
-io.on('connection', socket => {});
+const SOCKET_EVENTS = {
+  PLAYER_JOINED: 'PLAYER_JOINED',
+  PLAYER_VOTED: 'PLAYER_VOTED',
+  SHOW_CHOICE: 'SHOW_CHOICE',
+  REMOVE_CHOICE: 'REMOVE_CHOICE',
+};
+
+io.on('connection', socket => {
+  socket.on(SOCKET_EVENTS.PLAYER_JOINED, function(data) {
+    io.emit(SOCKET_EVENTS.PLAYER_JOINED, data);
+  });
+});
 
