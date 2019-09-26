@@ -11,6 +11,9 @@ export const SOCKET_EVENTS = {
 };
 
 export const socketHelper = {
+    get: () => {
+        return socket;
+    },
     emit: (eventName, data) => {
         // if (!(eventName in handlers)) {
         //     throw new Error(`no handler(s) for ${eventName}.  Call add first`);

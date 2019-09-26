@@ -44,6 +44,7 @@ class Movie extends React.Component {
       sharedViewing: !!this.props.sessionId,
       votes: [],
     };
+    window.socket = socketHelper.get();
   }
 
   componentDidMount() {
@@ -102,10 +103,17 @@ class Movie extends React.Component {
 
   handleShowChoices = choices => {
     console.log('choices shown!', choices);
-    // socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
-    //   this.setState(({votes}) => votes.concat(data));
-    // });
-    // socketHelper.emit(SOCKET_EVENTS.SHOW_CHOICE, choices);
+    socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
+      // this.setState(({votes}) => votes.concat(data));
+      console.log('a vote!', data);
+    });
+
+    socketHelper.emit(SOCKET_EVENTS.SHOW_CHOICE, {
+      choices: choices.map((choice, index) => ({
+        title: choice.title,
+        index,
+      }))
+    });
   }
 
   handleVoteEnding = () => {

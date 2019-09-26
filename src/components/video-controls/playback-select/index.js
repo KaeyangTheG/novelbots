@@ -7,7 +7,7 @@ export default ({value, handleOnChange}) => (
   <select className="playback-selector"
     value={value} onChange={handleOnChange}>
     {
-      playbackRates.map(rate => <option value={rate}>{rate}</option>)
+      playbackRates.map(rate => <option key={rate} value={rate}>{rate}</option>)
     }
   </select>
 )
