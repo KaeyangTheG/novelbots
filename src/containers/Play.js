@@ -71,25 +71,18 @@ class Play extends React.Component {
     }
     handleChoiceClick = (choice) => {
         const {displayName} = this.state;
-        socketHelper.emit(
-            SOCKET_EVENTS.PLAYER_VOTED,
-            {
-                choice,
-                displayName: this.state.displayName,
-            },
-        );
-        // this.setState({
-        //     choices: null,
-        //     success: `${displayName}, you voted ${choice.title} this round.  Come back here when the next choice appears`
-        // }, () => {
-        //     socketHelper.emit(
-        //         SOCKET_EVENTS.PLAYER_VOTED,
-        //         {
-        //             choice,
-        //             displayName: this.state.displayName,
-        //         },
-        //     );
-        // });
+        this.setState({
+            choices: null,
+            success: `${displayName}, you voted ${choice.title} this round.  Come back here when the next choice appears`
+        }, () => {
+            socketHelper.emit(
+                SOCKET_EVENTS.PLAYER_VOTED,
+                {
+                    choice,
+                    displayName: this.state.displayName,
+                },
+            );
+        });
     }
     render() {
         const {sessionId} = this.props;
