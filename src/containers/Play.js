@@ -70,10 +70,10 @@ class Play extends React.Component {
             displayName: event.target.value,
         });
     }
-    handleChoiceClick = (index) => {
+    handleChoiceClick = (choice) => {
         socketHelper.emit(
             SOCKET_EVENTS.PLAYER_VOTED,
-            {index},
+            choice,
         );
     }
     render() {
@@ -106,10 +106,10 @@ class Play extends React.Component {
                             ? (
                                 <div>
                                     {
-                                        choices.map((index, title) => (
+                                        choices.map(({index, title}) => (
                                             <div>
                                                 <button onClick={
-                                                    () => this.handleChoiceClick(index)
+                                                    () => this.handleChoiceClick({index, title})
                                                     }>
                                                     {title}
                                                 </button>

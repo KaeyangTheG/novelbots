@@ -108,22 +108,24 @@ class InteractiveVideo extends React.Component {
                   }
                 }))
                 .then(() => 
-                  this.waitForVideoTime(this.getEndChoiceTime(nodeIndex) - 1)
+                  this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
                     .then(handleVoteEnding)
                 )
                 .then(
                   () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
-                )
-                .then(
-                  () => this.setStateWithPromise({showChoices: false})
                     .then(handleRemoveChoices)
+                    .then(() => {
+                      window.setTimeout(() => {
+                        this.setState({showChoices: false})
+                      }, 2000);
+                    })
                 ))
             .then(() => {
               this.duration = video.duration;
               if (node.children.length) {
                 this.loadNode(node.children[(this.state.selected || 0) % node.children.length], nodeIndex + 1);
               } else {
-                this.waitForVideoTime(Math.floor(video.duration - 2))
+                this.waitForVideoTime(Math.floor(video.duration - 1))
                 .then(() => {
                   if(window.confirm('replay?')) {
                     this.initializeVideo(this.nodes[0]);
@@ -211,6 +213,7 @@ class InteractiveVideo extends React.Component {
   };
 
   setChoice = (selected) => {
+    console.log('weve set it');
     this.setState({
       selected,
     });
@@ -245,7 +248,7 @@ class InteractiveVideo extends React.Component {
   render () {
     const {Choices, sharedViewing} = this.props;
     const {choices, choiceDuration, showChoices, selected, duration} = this.state;
-
+    console.log('so tell me again', selected);
     return (
       <div className="video-container">
         <div className="overlay">

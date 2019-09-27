@@ -37,7 +37,7 @@ class Movie extends React.Component {
     this.interactiveVideoRef = React.createRef();
     this.nodes = props.movie.nodes;
     this.state = {
-      volume: 0.1,
+      volume: 0,
       playing: false,
       playbackRate: 1,
       fullScreen: false,
@@ -104,7 +104,9 @@ class Movie extends React.Component {
   handleShowChoices = choices => {
     console.log('choices shown!', choices);
     socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
-      this.setState(({votes}) => votes.concat(data));
+      this.setState(({votes}) => ({
+        votes: votes.concat(data),
+      }));
       console.log('a vote!', data);
     });
 
@@ -117,10 +119,13 @@ class Movie extends React.Component {
   }
 
   handleVoteEnding = () => {
-    console.log('setting the choice to index 1!!');
+    const theVote = getMaxVote(this.state.votes);
+    console.log('votes', this.state.votes);
+    console.log('setting the choice to index: ' + theVote);
     socketHelper.off(SOCKET_EVENTS.PLAYER_VOTED);
     socketHelper.emit(SOCKET_EVENTS.REMOVE_CHOICE);
-    this.interactiveVideoRef.current.setChoice(getMaxVote(this.state.votes));
+    
+    this.interactiveVideoRef.current.setChoice(theVote);
   }
 
   handleRemoveChoices = () => {
@@ -144,7 +149,7 @@ class Movie extends React.Component {
               <ul className="votes">
                 {
                   votes.map(
-                    vote => <li>{vote}</li>
+                    vote => <li>{vote.title}</li>
                   )
                 }
               </ul>

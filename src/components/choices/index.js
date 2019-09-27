@@ -4,13 +4,16 @@ import { CSSTransition } from 'react-transition-group';
 import Timer from './timer';
 import styles from './styles.css';
 
-const ChoiceButton = ({selected, title, handleOnClick, style}) => (
-  <button style={style}
-    className={selected ? 'selected' : ''}
-    onClick={handleOnClick}>
-    {title}
-  </button>
-);
+const ChoiceButton = ({selected, title, handleOnClick, style}) => {
+  console.log('choicebutton selected?', selected);
+  return (
+    <button style={style}
+      className={selected ? 'selected' : ''}
+      onClick={handleOnClick}>
+      {title}
+    </button>
+  );
+}
 
 class Choices extends React.Component {
   render() {
@@ -22,7 +25,8 @@ class Choices extends React.Component {
       handleOnClick,
       showing
     } = this.props;
-
+    console.log('so tell me again', selected, (typeof selected === 'number'));
+    
     return (
       <CSSTransition
         in={showing}
@@ -38,7 +42,7 @@ class Choices extends React.Component {
                   <ChoiceButton
                     key={title}
                     title={title}
-                    selected={selected === index}
+                    selected={selected == index}
                     handleOnClick={
                       handleOnClick ? () => handleOnClick(index) : null
                     }
