@@ -146,8 +146,18 @@ class Movie extends React.Component {
                 <ul>
                   {
                     Object.keys(votes).map(
-                      key => <li>{key}: {votes[key].length}</li>
-                    )
+                      key => (
+                      <li>
+                        <div>
+                          <h5>{key}: {votes[key].length}</h5>
+                          <ul>
+                            {
+                              votes[key].map(({displayName}) => <li>{displayName}</li>)
+                            }
+                          </ul>
+                        </div>
+                      </li>
+                    ))
                   }
                 </ul>
               </div>
