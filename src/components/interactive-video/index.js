@@ -42,7 +42,9 @@ class InteractiveVideo extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const video = this.videoRef.current;
-
+    if (this.state.showChoices) {
+      return;
+    }
     // a can of side effects
     const {
       volume: prevVolume,
@@ -82,6 +84,7 @@ class InteractiveVideo extends React.Component {
   }
 
   loadNode = (node, nodeIndex = 0) => {
+    const video = this.videoRef.current;
     const {handleShowChoices, handleVoteEnding, handleRemoveChoices} = this.props;
 
     return node.init()
@@ -101,24 +104,40 @@ class InteractiveVideo extends React.Component {
                   choices: node.children,
                   showChoices: true,
                   selected: null,
-                  choiceDuration: node.endChoice - node.startChoice,
+                  // choiceDuration: node.endChoice - node.startChoice,
+                  choiceDuration: 20,
                 }).then(() => {
+                  video.pause();
                   if (typeof handleShowChoices === 'function') {
                     handleShowChoices(node.children);
                   }
                 }))
                 .then(() => 
-                  this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
-                    .then(handleVoteEnding)
+                  // this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + 30)
+                  (new Promise(resolve => setTimeout(resolve, 20 * 1000)))
+                    .then(() => {
+                      if (typeof handleVoteEnding === 'function') {
+                        handleVoteEnding();
+                        video.play();
+                      }
+                      if (typeof handleRemoveChoices === 'function') {
+                        handleRemoveChoices();
+                        window.setTimeout(() => {
+                          this.setState({showChoices: false})
+                        }, 2000);
+                      }
+                    })
+                  // this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
+                  //   .then(handleVoteEnding)
                 )
                 .then(
-                  () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
-                    .then(handleRemoveChoices)
-                    .then(() => {
-                      window.setTimeout(() => {
-                        this.setState({showChoices: false})
-                      }, 2000);
-                    })
+                  // () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
+                  //   .then(handleRemoveChoices)
+                  //   .then(() => {
+                  //     window.setTimeout(() => {
+                  //       this.setState({showChoices: false})
+                  //     }, 2000);
+                  //   })
                 ))
             .then(() => {
               this.duration = video.duration;
