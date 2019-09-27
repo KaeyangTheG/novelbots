@@ -11,20 +11,11 @@ import {socketHelper, SOCKET_EVENTS} from '../util/socket';
 import './styles.css';
 
 const getMaxVote = votes => {
-  if (!votes || !votes.length) {
-    return 0;
-  }
-
-  const tally = {};
-
-  for(let i = 0; i < votes.length; i++) {
-    let count = tally[votes[i].index] || 0;
-    tally[votes[i].index] = count + 1;
-  }
-
-  return Object.keys(tally).sort((a, b) => {
-    return tally[b] - tally[a];
-  })[0];
+  return votes[
+      Object.keys(votes).sort((a, b) => {
+      return votes[b].length - votes[a].length;
+    })[0]
+  ][0].choice.index;
 };
 
 class Movie extends React.Component {
@@ -42,7 +33,7 @@ class Movie extends React.Component {
       playbackRate: 1,
       fullScreen: false,
       sharedViewing: !!this.props.sessionId,
-      votes: [],
+      votes: {},
     };
     window.socket = socketHelper.get();
   }
@@ -102,12 +93,17 @@ class Movie extends React.Component {
   }
 
   handleShowChoices = choices => {
-    console.log('choices shown!', choices);
-    socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, data => {
-      this.setState(({votes}) => ({
-        votes: votes.concat(data),
-      }));
-      console.log('a vote!', data);
+    socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, ({choice, displayName}) => {
+      this.setState(({ votes }) => {
+        return {
+          votes: {
+            ...votes,
+            [choice.title]: Array.isArray(votes[choice.title])
+              ? votes[choice.title].concat({choice, displayName}) 
+              : [{choice, displayName}],
+          },
+        };
+      });
     });
 
     socketHelper.emit(SOCKET_EVENTS.SHOW_CHOICE, {
@@ -130,7 +126,7 @@ class Movie extends React.Component {
 
   handleRemoveChoices = () => {
     this.setState({
-      votes: [],
+      votes: {},
     });
   }
 
@@ -144,13 +140,13 @@ class Movie extends React.Component {
     return (
       <div className={rootClass} ref={this.rootRef}>
         {
-          votes.length > 0
+          Object.keys(votes).length > 0
             ? (
               <div className="votes">
                 <ul>
                   {
-                    votes.map(
-                      vote => <li>{vote.title}</li>
+                    Object.keys(votes).map(
+                      key => <li>{key}: {votes[key].length}</li>
                     )
                   }
                 </ul>

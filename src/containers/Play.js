@@ -47,7 +47,6 @@ class Play extends React.Component {
                         success: `Hi ${displayName}! Watch the movie and make your votes here when the choice appears`,
                     });
                     socketHelper.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
-                        console.log('so... we here', choices);
                         this.setState({
                             choices,
                         });
@@ -71,10 +70,26 @@ class Play extends React.Component {
         });
     }
     handleChoiceClick = (choice) => {
+        const {displayName} = this.state;
         socketHelper.emit(
             SOCKET_EVENTS.PLAYER_VOTED,
-            choice,
+            {
+                choice,
+                displayName: this.state.displayName,
+            },
         );
+        // this.setState({
+        //     choices: null,
+        //     success: `${displayName}, you voted ${choice.title} this round.  Come back here when the next choice appears`
+        // }, () => {
+        //     socketHelper.emit(
+        //         SOCKET_EVENTS.PLAYER_VOTED,
+        //         {
+        //             choice,
+        //             displayName: this.state.displayName,
+        //         },
+        //     );
+        // });
     }
     render() {
         const {sessionId} = this.props;
@@ -92,7 +107,6 @@ class Play extends React.Component {
             <div>
                 <h2>Play along!</h2>
                 <h4>Session id: {sessionId}</h4>
-
                 {
                     success === '' && choices === null
                         ? (
@@ -119,7 +133,6 @@ class Play extends React.Component {
                                 </div>
                             ) : <p>{success}</p>          
                 }
-
             </div>
         );
     }
