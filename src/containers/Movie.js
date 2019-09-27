@@ -11,6 +11,10 @@ import {socketHelper, SOCKET_EVENTS} from '../util/socket';
 import './styles.css';
 
 const getMaxVote = votes => {
+  if (!votes || !Object.keys(votes).length) {
+    return 0;
+  }
+
   return votes[
       Object.keys(votes).sort((a, b) => {
       return votes[b].length - votes[a].length;
@@ -170,9 +174,9 @@ class Movie extends React.Component {
           assetRoot={`/assets/movies/timemachine/`}
           Choices={Choices}
           handleLoad={this.play}
-          handleShowChoices={this.handleShowChoices}
-          handleVoteEnding={this.handleVoteEnding}
-          handleRemoveChoices={this.handleRemoveChoices}
+          handleShowChoices={handleShowChoices}
+          handleVoteEnding={handleVoteEnding}
+          handleRemoveChoices={handleRemoveChoices}
           sharedViewing = {!!this.props.sessionId}
           {...this.state} />
         <VideoControls>
