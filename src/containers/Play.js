@@ -44,7 +44,7 @@ class Play extends React.Component {
                 .then(() => {
                     socketHelper.emit(SOCKET_EVENTS.PLAYER_JOINED, { displayName });
                     this.setState({
-                        success: `You are in ${displayName}! Waiting for the film to begin`,
+                        success: `Hi ${displayName}! Watch the movie and make your votes here when the choice appears`,
                     });
                     socketHelper.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
                         console.log('so... we here', choices);
