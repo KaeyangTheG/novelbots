@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import {socketHelper, SOCKET_EVENTS} from '../util/socket';
+import io from 'socket.io-client';
+import { SOCKET_EVENTS } from '../util/socket';
 
 class Play extends React.Component {
     state = {
@@ -24,6 +25,7 @@ class Play extends React.Component {
                     error: '',
                     success: ''
                 });
+                this.socket = io(sessionId);
             })
             .catch(() => {
                 this.setState({
@@ -42,16 +44,16 @@ class Play extends React.Component {
             const {displayName} = this.state;
             axios.post(`/api/sessions/${sessionId}/players`, { displayName })
                 .then(() => {
-                    socketHelper.emit(SOCKET_EVENTS.PLAYER_JOINED, { displayName });
+                    this.socket.emit(SOCKET_EVENTS.PLAYER_JOINED, { displayName });
                     this.setState({
                         success: `Hi ${displayName}! Watch the movie and make your votes here when the choice appears`,
                     });
-                    socketHelper.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
+                    this.socket.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
                         this.setState({
                             choices,
                         });
                     });
-                    socketHelper.on(SOCKET_EVENTS.REMOVE_CHOICE, () => {
+                    this.socket.on(SOCKET_EVENTS.REMOVE_CHOICE, () => {
                         this.setState({
                             choices: null,
                         });
@@ -75,7 +77,7 @@ class Play extends React.Component {
             choices: null,
             success: `${displayName}, you voted ${choice.title} this round.  Come back here when the next choice appears`
         }, () => {
-            socketHelper.emit(
+            this.socket.emit(
                 SOCKET_EVENTS.PLAYER_VOTED,
                 {
                     choice,

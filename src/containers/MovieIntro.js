@@ -13,10 +13,15 @@ class MovieIntro extends React.Component {
     componentDidMount() {
         axios.post('/api/sessions')
             .then(({data}) => {
+                const sessionId = data.sessionId;
+                this.socket = io(sessionId);
+                Promise.resolve(sessionId);
+            })
+            .then(sessionId => {
                 this.setState({
                     sessionId: data.sessionId,
                 });
-                socketHelper.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
+                this.socket.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
                     this.setState(({players}) => ({
                         players: players.concat(data),
                     }));

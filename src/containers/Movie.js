@@ -6,7 +6,8 @@ import { IconButton } from '../components/icon';
 import VolumeSlider from '../components/video-controls/volume-slider';
 import PlaybackSelect from '../components/video-controls/playback-select';
 import { useRouteData } from 'react-static'
-import {socketHelper, SOCKET_EVENTS} from '../util/socket';
+import { SOCKET_EVENTS } from '../util/socket';
+import io from 'socket.io-client';
 
 import './styles.css';
 
@@ -28,6 +29,7 @@ class Movie extends React.Component {
 
   constructor(props) {
     super(props);
+    const {sessionId} = props;
     this.rootRef = React.createRef();
     this.interactiveVideoRef = React.createRef();
     this.nodes = props.movie.nodes;
@@ -36,10 +38,12 @@ class Movie extends React.Component {
       playing: false,
       playbackRate: 1,
       fullScreen: false,
-      sharedViewing: !!this.props.sessionId,
+      sharedViewing: !!sessionId,
       votes: {},
     };
-    window.socket = socketHelper.get();
+    if (!!sessionId) {
+      this.socket = io(sessionId);
+    }
   }
 
   componentDidMount() {
@@ -97,7 +101,7 @@ class Movie extends React.Component {
   }
 
   handleShowChoices = choices => {
-    socketHelper.on(SOCKET_EVENTS.PLAYER_VOTED, ({choice, displayName}) => {
+    this.socket.on(SOCKET_EVENTS.PLAYER_VOTED, ({choice, displayName}) => {
       this.setState(({ votes }) => {
         return {
           votes: {
@@ -110,7 +114,7 @@ class Movie extends React.Component {
       });
     });
 
-    socketHelper.emit(SOCKET_EVENTS.SHOW_CHOICE, {
+    this.socket.emit(SOCKET_EVENTS.SHOW_CHOICE, {
       choices: choices.map((choice, index) => ({
         title: choice.title,
         index,
@@ -120,10 +124,8 @@ class Movie extends React.Component {
 
   handleVoteEnding = () => {
     const theVote = getMaxVote(this.state.votes);
-    console.log('votes', this.state.votes);
-    console.log('setting the choice to index: ' + theVote);
-    socketHelper.off(SOCKET_EVENTS.PLAYER_VOTED);
-    socketHelper.emit(SOCKET_EVENTS.REMOVE_CHOICE);
+    this.socket.off(SOCKET_EVENTS.PLAYER_VOTED);
+    this.socket.emit(SOCKET_EVENTS.REMOVE_CHOICE);
     
     this.interactiveVideoRef.current.setChoice(theVote);
   }
