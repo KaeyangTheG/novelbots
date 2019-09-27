@@ -13,11 +13,24 @@
 }
 
 .video-demo .votes {
-  width: 30vw;
+  min-width: 10vw;
   min-height: 20vw;
   position: absolute;
   top: 0;
   left: 0;
+  background: black;
+  padding: 8;
+  padding-left: 24px;
+  z-index: 2;
+}
+
+.video-demo .votes ul {
+  padding: 0;
+  margin: 0;
+}
+
+.video-demo .votes ul li {
+  text-align: left;
 }
 
 @media (max-width: 768px) {

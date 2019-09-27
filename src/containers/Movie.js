@@ -140,19 +140,21 @@ class Movie extends React.Component {
     const handleShowChoices = sharedViewing ? this.handleShowChoices : null;
     const handleRemoveChoices = sharedViewing ? this.handleRemoveChoices : null;
     const handleVoteEnding = sharedViewing ? this.handleVoteEnding : null;
-
+    
     return (
       <div className={rootClass} ref={this.rootRef}>
         {
           votes.length > 0
             ? (
-              <ul className="votes">
-                {
-                  votes.map(
-                    vote => <li>{vote.title}</li>
-                  )
-                }
-              </ul>
+              <div className="votes">
+                <ul>
+                  {
+                    votes.map(
+                      vote => <li>{vote.title}</li>
+                    )
+                  }
+                </ul>
+              </div>
             )
             : null
         }

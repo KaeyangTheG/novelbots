@@ -69,7 +69,7 @@ class InteractiveVideo extends React.Component {
   initializeVideo = (rootNode) => {
      this.mediaSource = new window.MediaSource();
      this.videoRef.current.src = URL.createObjectURL(this.mediaSource);
-     window.timeRanges = this.timeRanges = [];
+     this.timeRanges = [];
      this.duration = 0;
      this.nodeIndex = null;
      this.mediaSource.addEventListener('sourceopen', () => {
@@ -248,7 +248,7 @@ class InteractiveVideo extends React.Component {
   render () {
     const {Choices, sharedViewing} = this.props;
     const {choices, choiceDuration, showChoices, selected, duration} = this.state;
-    console.log('so tell me again', selected);
+
     return (
       <div className="video-container">
         <div className="overlay">
