@@ -105,16 +105,22 @@ class InteractiveVideo extends React.Component {
                   showChoices: true,
                   selected: null,
                   // choiceDuration: node.endChoice - node.startChoice,
-                  choiceDuration: 20,
+                  choiceDuration: node.choiceDuration,
                 }).then(() => {
-                  video.pause();
+                  if (node.pauseOnChoice) {
+                    video.pause();
+                  }
                   if (typeof handleShowChoices === 'function') {
                     handleShowChoices(node.children);
                   }
                 }))
                 .then(() => 
                   // this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + 30)
-                  (new Promise(resolve => setTimeout(resolve, 20 * 1000)))
+                  (
+                    node.pauseOnChoice
+                      ? new Promise(resolve => setTimeout(resolve, node.choiceDuration * 1000))
+                      : this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + node.choiceDuration)    
+                  )
                     .then(() => {
                       if (typeof handleVoteEnding === 'function') {
                         handleVoteEnding();

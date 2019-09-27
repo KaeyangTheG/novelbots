@@ -1,11 +1,14 @@
 class VideoNode {
   constructor({
-    index, title,
+    index,
+    title,
     children,
     endChoice,
     startChoice,
     assetRoot,
     duration,
+    pauseOnChoice = false,
+    choiceDuration,
     withInit = false,
   }) {
     this.index = index;
@@ -15,6 +18,9 @@ class VideoNode {
     this.startChoice = startChoice;
     this.assetRoot = assetRoot;
     this.duration = duration;
+    this.pauseOnChoice = pauseOnChoice;
+    this.choiceDuration = choiceDuration || (endChoice || duration) - startChoice;
+
     if (withInit) {
       this.init();
     }
