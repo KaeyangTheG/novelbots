@@ -3,7 +3,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { Link } from '../components/Router';
 import { useRouteData } from 'react-static';
-import { socketHelper, SOCKET_EVENTS } from '../util/socket';
+import { SOCKET_EVENTS } from '../util/socket';
 
 class MovieIntro extends React.Component {
     state = {
@@ -13,22 +13,24 @@ class MovieIntro extends React.Component {
     componentDidMount() {
         axios.post('/api/sessions')
             .then(({data}) => {
-                const sessionId = data.sessionId;
-                this.socket = io(sessionId);
-                return Promise.resolve(data);
-            })
-            .then(data => {
-                this.setState({
-                    sessionId: data.sessionId,
-                });
-                this.socket.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
-                    this.setState(({players}) => ({
-                        players: players.concat(data),
-                    }));
+                this.socket = io.connect();
+                return new Promise(resolve => {
+                    const sessionId = data.sessionId;
+                    this.socket.on('connect', () => {
+                        this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId);
+                        this.setState({
+                            sessionId,
+                        });
+                        this.socket.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
+                            this.setState(({players}) => ({
+                                players: players.concat(data),
+                            }));
+                        });
+                    });
                 });
             });
         // DEBUGGING
-        window.socket = io();
+        // window.socket = io();
     }
     render() {
         const { id, name, synopsis, thumbnail } = this.props.movie;

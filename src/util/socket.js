@@ -8,6 +8,7 @@ export const SOCKET_EVENTS = {
     PLAYER_VOTED: 'PLAYER_VOTED',
     SHOW_CHOICE: 'SHOW_CHOICE',
     REMOVE_CHOICE: 'REMOVE_CHOICE',
+    CREATE_ROOM: 'CREATE_ROOM',
 };
 
 export const socketHelper = {

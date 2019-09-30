@@ -25,7 +25,10 @@ class Play extends React.Component {
                     error: '',
                     success: ''
                 });
-                this.socket = io(sessionId);
+                this.socket = io.connect();
+                this.socket.on('connect', () => {
+                    this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId); 
+                });
             })
             .catch(() => {
                 this.setState({
