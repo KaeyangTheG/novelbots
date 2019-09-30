@@ -30,10 +30,6 @@ io.sockets.on('connection', socket => {
   socket.on(SOCKET_EVENTS.CREATE_ROOM, sessionId => {
     console.log('room created', sessionId);
     socket.join(sessionId);
-    // socket.on(SOCKET_EVENTS.PLAYER_JOINED, data => {
-    //   console.log('server received', data);
-    //   io.sockets.in(sessionId).emit(SOCKET_EVENTS.PLAYER_JOINED, data);
-    // })
     Object.keys(SOCKET_EVENTS)
       .filter(key => key !== SOCKET_EVENTS.CREATE_ROOM)
       .forEach(eventName => {

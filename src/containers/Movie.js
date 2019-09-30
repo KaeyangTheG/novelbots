@@ -42,7 +42,10 @@ class Movie extends React.Component {
       votes: {},
     };
     if (!!sessionId) {
-      this.socket = io(sessionId);
+      this.socket = io.connect();
+      this.socket.on('connect', () => {
+        this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId);
+      });
     }
   }
 

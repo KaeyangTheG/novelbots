@@ -114,37 +114,29 @@ class InteractiveVideo extends React.Component {
                     handleShowChoices(node.children);
                   }
                 }))
-                .then(() => 
-                  // this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + 30)
-                  (
+                .then(() => {
+                  if (node.index === 4) {
+                    console.log('here', this.getStartChoiceTime(nodeIndex), node.choiceDuration, node.pauseOnChoice);
+                  }
+                  return (
                     node.pauseOnChoice
                       ? new Promise(resolve => setTimeout(resolve, node.choiceDuration * 1000))
-                      : this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + node.choiceDuration)    
+                      : this.waitForVideoTime(this.getStartChoiceTime(nodeIndex) + node.choiceDuration - 1)    
                   )
                     .then(() => {
+                      console.log('we end up here always, right');
                       if (typeof handleVoteEnding === 'function') {
                         handleVoteEnding();
                         video.play();
                       }
                       if (typeof handleRemoveChoices === 'function') {
                         handleRemoveChoices();
-                        window.setTimeout(() => {
-                          this.setState({showChoices: false})
-                        }, 2000);
                       }
-                    })
-                  // this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
-                  //   .then(handleVoteEnding)
-                )
-                .then(
-                  // () => this.waitForVideoTime(this.getEndChoiceTime(nodeIndex))
-                  //   .then(handleRemoveChoices)
-                  //   .then(() => {
-                  //     window.setTimeout(() => {
-                  //       this.setState({showChoices: false})
-                  //     }, 2000);
-                  //   })
-                ))
+                      setTimeout(() => {
+                        this.setState({showChoices: false})
+                      }, 2000 / this.videoRef.current.playbackRate)
+                    });
+                }))
             .then(() => {
               this.duration = video.duration;
               if (node.children.length) {
@@ -238,7 +230,6 @@ class InteractiveVideo extends React.Component {
   };
 
   setChoice = (selected) => {
-    console.log('weve set it');
     this.setState({
       selected,
     });

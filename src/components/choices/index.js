@@ -5,7 +5,6 @@ import Timer from './timer';
 import styles from './styles.css';
 
 const ChoiceButton = ({selected, title, handleOnClick, style}) => {
-  console.log('choicebutton selected?', selected);
   return (
     <button style={style}
       className={selected ? 'selected' : ''}
@@ -25,7 +24,6 @@ class Choices extends React.Component {
       handleOnClick,
       showing
     } = this.props;
-    console.log('so tell me again', selected, (typeof selected === 'number'));
     
     return (
       <CSSTransition
