@@ -15,9 +15,9 @@ class MovieIntro extends React.Component {
             .then(({data}) => {
                 const sessionId = data.sessionId;
                 this.socket = io(sessionId);
-                Promise.resolve(sessionId);
+                return Promise.resolve(data);
             })
-            .then(sessionId => {
+            .then(data => {
                 this.setState({
                     sessionId: data.sessionId,
                 });
