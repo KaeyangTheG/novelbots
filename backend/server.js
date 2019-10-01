@@ -42,6 +42,9 @@ io.sockets.on('connection', socket => {
       .forEach(eventName => {
         socket.on(eventName, data => {
           io.sockets.in(sessionId).emit(eventName, data);
+          if (eventName === SOCKET_EVENTS.SHOW_CHOICE) {
+            sessionUtil.updateExpiry(sessionId);
+          }
         });
       });
     if (activeChecks[sessionId]) {
