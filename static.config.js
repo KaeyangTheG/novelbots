@@ -1,5 +1,5 @@
 import path from 'path'
-const data = require('./db.json');
+const data = require(path.join(__dirname, 'backend', 'db.json'));
 
 export default {
   getRoutes: async () => {

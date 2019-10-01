@@ -7,15 +7,25 @@ module.exports = function (app) {
     app.post('/api/sessions', function(req, res) {
         const session = new Session();
         const sessionId = shortid.generate();
+        const secret = shortid.generate();
+        
+        // set session expiry to an hour from now
+        const expiry = new Date();
+        expiry.setTime(expiry.getTime() + (60 * 60 * 1000));
+
         Object.assign(session, {
-            sessionId
+            sessionId,
+            secret,
+            expiry,
+            open: true,
         });
+        
         return new Promise(resolve => {
             session.save(err => {
                 if (err) {
                     res.send(500, err);
                 } else {
-                    res.send(200, {sessionId})
+                    res.send(200, {sessionId, secret})
                 }
             });
         });

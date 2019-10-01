@@ -18,17 +18,44 @@ class Play extends React.Component {
         // hide everything until this checks out
         // GET /api/sessions/{id}/status
         const {sessionId} = this.props;
+        let displayName = '';
+
+        try {
+            const cache = window.sessionStorage.getItem(`play-${sessionId}`);
+            if (cache) {
+                displayName = JSON.parse(cache).displayName;
+            }
+        } catch  {
+            // pretend nothing happened
+        }
+
         axios.get(`/api/sessions/${sessionId}`)
             .then(() => {
                 this.setState({
                     verifiedSession: true,
                     error: '',
-                    success: ''
+                    success: '',
+                    displayName,
                 });
                 this.socket = io.connect();
                 this.socket.on('connect', () => {
                     this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId); 
                 });
+                if (displayName) {
+                    this.setState({
+                        success: `Hi ${displayName}! Watch the movie and make your votes here when the choice appears`,
+                    });
+                    this.socket.on(SOCKET_EVENTS.SHOW_CHOICE, ({choices}) => {
+                        this.setState({
+                            choices,
+                        });
+                    });
+                    this.socket.on(SOCKET_EVENTS.REMOVE_CHOICE, () => {
+                        this.setState({
+                            choices: null,
+                        });
+                    });
+                }
             })
             .catch(() => {
                 this.setState({
@@ -47,6 +74,7 @@ class Play extends React.Component {
             const {displayName} = this.state;
             axios.post(`/api/sessions/${sessionId}/players`, { displayName })
                 .then(() => {
+                    window.sessionStorage.setItem(`play-${sessionId}`, JSON.stringify({displayName}));
                     this.socket.emit(SOCKET_EVENTS.PLAYER_JOINED, { displayName });
                     this.setState({
                         success: `Hi ${displayName}! Watch the movie and make your votes here when the choice appears`,
@@ -62,11 +90,11 @@ class Play extends React.Component {
                         });
                     });
                 })
-                // .catch(() => {
-                //     this.setState({
-                //         error: 'Could not join the session :('
-                //     });
-                // });
+                .catch(() => {
+                    this.setState({
+                        error: 'Could not join the session :('
+                    });
+                });
         });
     }
     handleDisplaynameChange = event => {
