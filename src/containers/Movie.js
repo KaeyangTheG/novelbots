@@ -43,13 +43,8 @@ class Movie extends React.Component {
       votes: {},
       sessionVerified: false,
       invalidSession: false,
+      sessionClosed: false,
     };
-    if (!!sessionId) {
-      this.socket = io.connect();
-      this.socket.on('connect', () => {
-        this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId);
-      });
-    }
   }
 
   componentDidMount() {
@@ -58,7 +53,7 @@ class Movie extends React.Component {
         .then(() => {
           this.setState({
             sessionVerified: true,
-          });
+          }, handleSessionVerified);
         })
         .catch(() => {
           this.setState({
@@ -82,6 +77,22 @@ class Movie extends React.Component {
         });
       });
     }
+  }
+
+  handleSessionVerified = () => {
+    if (this.socket) {
+      return;
+    }
+    this.socket = io.connect();
+    this.socket.on('connect', () => {
+      this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId);
+    });
+    this.socket.on(SOCKET_EVENTS.CLOSE_ROOM, () => {
+      this.setState({
+        sessionClosed: true,
+      });
+      delete this.socket;
+    });
   }
 
   handleVolumeChange = ({target}) => {
@@ -176,12 +187,20 @@ class Movie extends React.Component {
         votes,
         sessionVerified,
         invalidSession,
+        sessionClosed,
     } = this.state;
+    
     const rootClass = 'video-demo' + (fullScreen ? '--fs' : '');
     const handleShowChoices = sharedViewing ? this.handleShowChoices : null;
     const handleRemoveChoices = sharedViewing ? this.handleRemoveChoices : null;
     const handleVoteEnding = sharedViewing ? this.handleVoteEnding : null;
     
+    if (sessionClosed) {
+      return (
+        <div>The session closed for some reason. Go here to watch the movie by yourself.</div>
+      );
+    }
+
     if (invalidSession) {
       return <div>Invalid session!</div>;
     }

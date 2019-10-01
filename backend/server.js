@@ -33,22 +33,28 @@ const SOCKET_BOOKMARK_EVENTS = {
   CLOSE_ROOM: 'CLOOSE_ROOM',
 };
 
+let activeChecks = {};
+
 io.sockets.on('connection', socket => {
   socket.on(SOCKET_BOOKMARK_EVENTS.CREATE_ROOM, sessionId => {
     socket.join(sessionId);
     Object.keys(SOCKET_EVENTS)
       .forEach(eventName => {
         socket.on(eventName, data => {
-          console.log('server received', eventName, sessionId);
           io.sockets.in(sessionId).emit(eventName, data);
         });
       });
+    if (activeChecks[sessionId]) {
+      return;
+    }
+    activeChecks[sessionId] = true;
     (function ping() {
       sessionUtil.exists(sessionId)
         .then(exists => {
           if (!exists) {
             io.sockets.in(sessionId).emit(SOCKET_BOOKMARK_EVENTS.CLOSE_ROOM);
             socket.disconnect();
+            delete activeChecks.sessionId;
           } else {
             setTimeout(ping, 15 * 60 * 1000); // check again in 15 minutes
           }

@@ -9,6 +9,7 @@ export const SOCKET_EVENTS = {
     SHOW_CHOICE: 'SHOW_CHOICE',
     REMOVE_CHOICE: 'REMOVE_CHOICE',
     CREATE_ROOM: 'CREATE_ROOM',
+    CLOSE_ROOM: 'CLOSE_ROOM',
 };
 
 export const socketHelper = {

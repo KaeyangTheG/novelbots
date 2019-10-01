@@ -12,6 +12,7 @@ class Play extends React.Component {
         submitted: false,
         gameStarted: false,
         choices: null,
+        closed: false,
     };
     componentDidMount() {
         // verify that the session id in the param is valid
@@ -54,6 +55,12 @@ class Play extends React.Component {
                         this.setState({
                             choices: null,
                         });
+                    });
+                    this.socket.on(SOCKET_EVENTS.CLOSE_ROOM, () => {
+                        this.setState({
+                            closed: true,
+                        });
+                        this.socket.close();
                     });
                 }
             })
@@ -119,8 +126,20 @@ class Play extends React.Component {
     }
     render() {
         const {sessionId} = this.props;
-        const {displayName, verifiedSession, error, submitted, success, choices} = this.state;
+        const {
+            displayName,
+            verifiedSession,
+            error,
+            submitted,
+            success,
+            choices,
+            closed
+        } = this.state;
         
+        if (closed) {
+            return <div>The game has concluded.  Press some button to return to home</div>;
+        }
+
         if (error !== '') {
             return <div>{error}</div>;
         }
