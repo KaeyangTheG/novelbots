@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 import Choices from '../components/choices';
 import InteractiveVideo from '../components/interactive-video';
 import VideoControls from '../components/video-controls';
@@ -40,6 +41,8 @@ class Movie extends React.Component {
       fullScreen: false,
       sharedViewing: !!sessionId,
       votes: {},
+      sessionVerified: false,
+      invalidSession: false,
     };
     if (!!sessionId) {
       this.socket = io.connect();
@@ -50,11 +53,35 @@ class Movie extends React.Component {
   }
 
   componentDidMount() {
+    if (this.state.sharedViewing && !this.state.sessionVerified) {
+      axios.get(`/api/sessions/${this.props.sessionId}`)
+        .then(() => {
+          this.setState({
+            sessionVerified: true,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            invalidSession: true,
+          });
+        });
+        return;
+    }
     this.rootRef.current.addEventListener('fullscreenchange', () => {
       this.setState({
         fullScreen: document.fullscreenElement !== null
       });
     });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.sessionVerified && !prevState.sessionVerified) {
+      this.rootRef.current.addEventListener('fullscreenchange', () => {
+        this.setState({
+          fullScreen: document.fullscreenElement !== null
+        });
+      });
+    }
   }
 
   handleVolumeChange = ({target}) => {
@@ -140,12 +167,29 @@ class Movie extends React.Component {
   }
 
   render () {
-    const { playing, volume, playbackRate, fullScreen, sharedViewing, votes } = this.state;
+    const {
+        playing,
+        volume,
+        playbackRate,
+        fullScreen,
+        sharedViewing,
+        votes,
+        sessionVerified,
+        invalidSession,
+    } = this.state;
     const rootClass = 'video-demo' + (fullScreen ? '--fs' : '');
     const handleShowChoices = sharedViewing ? this.handleShowChoices : null;
     const handleRemoveChoices = sharedViewing ? this.handleRemoveChoices : null;
     const handleVoteEnding = sharedViewing ? this.handleVoteEnding : null;
     
+    if (invalidSession) {
+      return <div>Invalid session!</div>;
+    }
+
+    if (!sessionVerified && sharedViewing) {
+      return <div>Verifying session</div>;
+    }
+
     return (
       <div className={rootClass} ref={this.rootRef}>
         {
