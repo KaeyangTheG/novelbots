@@ -53,7 +53,7 @@ class Movie extends React.Component {
         .then(() => {
           this.setState({
             sessionVerified: true,
-          }, handleSessionVerified);
+          }, this.handleSessionVerified);
         })
         .catch(() => {
           this.setState({
@@ -85,7 +85,7 @@ class Movie extends React.Component {
     }
     this.socket = io.connect();
     this.socket.on('connect', () => {
-      this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, sessionId);
+      this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, this.props.sessionId);
     });
     this.socket.on(SOCKET_EVENTS.CLOSE_ROOM, () => {
       this.setState({

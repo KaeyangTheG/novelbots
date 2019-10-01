@@ -96,6 +96,12 @@ class Play extends React.Component {
                             choices: null,
                         });
                     });
+                    this.socket.on(SOCKET_EVENTS.CLOSE_ROOM, () => {
+                        this.setState({
+                            closed: true,
+                        });
+                        this.socket.close();
+                    });
                 })
                 .catch(() => {
                     this.setState({

@@ -8,8 +8,8 @@ const server = http.Server(app);
 const io = socketIO(server);
 const configDB = require(path.join(__dirname, 'config/database.js'))
 const bodyParser = require('body-parser');
-const dateUtil = require('./date.js');
-const sessionUtil = require('./session.js');
+const dateUtil = require('./util/date.js');
+const sessionUtil = require('./util/session.js');
 
 app.set('port', 5000);
 app.use(bodyParser());
@@ -30,7 +30,7 @@ const SOCKET_EVENTS = {
 
 const SOCKET_BOOKMARK_EVENTS = {
   CREATE_ROOM: 'CREATE_ROOM',
-  CLOSE_ROOM: 'CLOOSE_ROOM',
+  CLOSE_ROOM: 'CLOSE_ROOM',
 };
 
 let activeChecks = {};
@@ -41,6 +41,7 @@ io.sockets.on('connection', socket => {
     Object.keys(SOCKET_EVENTS)
       .forEach(eventName => {
         socket.on(eventName, data => {
+          console.log('server received,', eventName, data);
           io.sockets.in(sessionId).emit(eventName, data);
           if (eventName === SOCKET_EVENTS.SHOW_CHOICE) {
             sessionUtil.updateExpiry(sessionId);

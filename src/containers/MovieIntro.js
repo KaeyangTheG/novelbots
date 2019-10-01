@@ -9,6 +9,7 @@ class MovieIntro extends React.Component {
     state = {
         sessionId: null,
         players: [],
+        sessionClosed: false,
     }
     componentDidMount() {
         axios.post('/api/sessions')
@@ -26,6 +27,11 @@ class MovieIntro extends React.Component {
                                 players: players.concat(data),
                             }));
                         });
+                        this.socket.on(SOCKET_EVENTS.CLOSE_ROOM, data => {
+                            this.setState({
+                                sessionClosed: true,
+                            });
+                        });
                     });
                 });
             });
@@ -34,7 +40,12 @@ class MovieIntro extends React.Component {
     }
     render() {
         const { id, name, synopsis, thumbnail } = this.props.movie;
-        const { sessionId, players } = this.state;
+        const { sessionId, players, sessionClosed } = this.state;
+        if (sessionClosed) {
+            return (
+                <div>The session closed for some reason.  Perhaps you fell asleep or simply walked away from your device.  In any case this is deeply unsettling.</div>
+            );
+        }
         return (
             sessionId
                 ? (
