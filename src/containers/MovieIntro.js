@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
+import {navigate} from '@reach/router';
 import { Link } from '../components/Router';
 import { useRouteData } from 'react-static';
 import { SOCKET_EVENTS } from '../util/socket';
@@ -12,6 +13,7 @@ class MovieIntro extends React.Component {
         sessionClosed: false,
     }
     componentDidMount() {
+        console.log(this.props);
         axios.post('/api/sessions')
             .then(({data}) => {
                 this.socket = io.connect();
@@ -74,9 +76,13 @@ class MovieIntro extends React.Component {
                                 )
                                 : null
                         }
-                        <Link to={`/movies/${id}/${sessionId}`}>
+                        <button onClick={() => {
+                            this.socket.emit(SOCKET_EVENTS.BEGIN_GAME);
+                            navigate(`/movies/${id}/${sessionId}`);
+                        }}>
                             Begin the film!
-                        </Link>
+                        </button>
+
                     </div>
                 )
                 : (
@@ -88,9 +94,9 @@ class MovieIntro extends React.Component {
     }
 }
 
-export default () => {
+export default (props) => {
     const { movie } = useRouteData();
     return (
-        <MovieIntro movie={movie} />
+        <MovieIntro movie={movie} {...props} />
     );
 }
