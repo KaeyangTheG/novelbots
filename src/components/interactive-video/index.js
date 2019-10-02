@@ -1,6 +1,7 @@
 import React from 'react';
 import VideoNode from './video-node';
 import {navigate} from '@reach/router';
+import Button from '../button';
 import './styles.css';
 
 const createVideoNodes = (videoNodes, assetRoot) => {
@@ -275,13 +276,15 @@ class InteractiveVideo extends React.Component {
           {
             showEndScreen ? (
               <div className="endscreen">
-                <button onClick={() => navigate('/')}>Return to home</button>
-                <button onClick={() => {
+                <Button handleClick={() => {
                   this.initializeVideo(this.nodes[0]);
                   this.setState({ showEndScreen: false});
                 }}>
-                  Return to checkpoint
-                </button>
+                  <strong>Try again</strong>
+                </Button>
+                <Button handleClick={() => navigate('/')}>
+                  <strong>Return to home</strong>
+                </Button>
               </div>
             ) : null
           }
