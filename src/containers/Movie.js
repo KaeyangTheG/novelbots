@@ -239,7 +239,7 @@ class Movie extends React.Component {
         <InteractiveVideo
           ref={this.interactiveVideoRef}
           nodes={this.nodes}
-          assetRoot={`/assets/movies/timemachine/`}
+          assetRoot={`/assets/movies/${this.props.movie.assetRoot || 'timemachine'}/`}
           Choices={Choices}
           handleLoad={this.play}
           handleShowChoices={handleShowChoices}

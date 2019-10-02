@@ -287,133 +287,41 @@
         "poster": "/assets/posters/bandersnatch.webp",
         "src": "/assets/trailers/music.mp4"
       },
+      "assetRoot": "bandersnatch",
       "nodes": [
         {
           "id": 1,
           "index": 1,
           "title": "Beginning",
-          "startChoice": 109,
-          "endChoice": 120,
-          "duration": 122.021900,
+          "startChoice": 140,
+          "endChoice": 150,
+          "duration": 154,
           "children": [
             {
               "index": 2,
-              "title": "Get in"
+              "title": "Sugar Puffs"
             },
             {
-              "index": 5,
-              "title": "Not a chance"
+              "index": 3,
+              "title": "Frosted Flakes"
             }
           ]
-        },
+        },        
         {
           "id": 2,
           "index": 2,
-          "title": "Get in",
-          "startChoice": 96,
-          "endChoice": 107,
-          "duration": 111.034120,
+          "title": "Sugar Puffs",
+          "duration": 20,
           "children": [
-            {
-              "index": 3,
-              "title": "Save Rob"
-            },
-            {
-              "index": 4,
-              "title": "Don't save Rob"
-            }
           ]
         },
         {
           "id": 3,
           "index": 3,
-          "title": "Save Rob",
-          "duration": 45.068220,
+          "title": "Frosted Flakes",
+          "duration": 21,
           "children": [
-            {
-              "index": 2,
-              "title": "Get in"
-            }
           ]
-        },
-        {
-          "id": 4,
-          "index": 4,
-          "title": "Don't save Rob",
-          "startChoice": 83,
-          "endChoice": 94,
-          "duration": 95.051487,
-          "children": [
-            {
-              "index": 6,
-              "title": "Fight the Agents"
-            },
-            {
-              "index": 7,
-              "title": "Fight the Zombies"
-            }
-          ]
-        },
-        {
-          "id": 5,
-          "index": 5,
-          "title": "Not a chance",
-          "duration": 35.024853,
-          "children": [
-            {
-              "index": 1,
-              "title": "Beginning"
-            }
-          ]
-        },
-        {
-          "id": 6,
-          "index": 6,
-          "title": "Fight the Agents",
-          "startChoice": 56,
-          "endChoice": 67,
-          "duration": 69.025487,
-          "children": [
-            {
-              "index": 8,
-              "title": "Save em"
-            },
-            {
-              "index": 9,
-              "title": "Sorry GTG"
-            }
-          ]
-        },
-        {
-          "id": 7,
-          "index": 7,
-          "title": "Fight the Zombies",
-          "duration": 46.035853,
-          "children": [
-            {
-              "index": 4,
-              "title": "Don't save Rob"
-            }
-          ]
-        },
-        {
-          "id": 8,
-          "index": 8,
-          "title": "Save em",
-          "duration": 47.036853,
-          "children": [
-            {
-              "index": 6,
-              "title": "Fight the Agents"
-            }
-          ]
-        },
-        {
-          "id": 9,
-          "index": 9,
-          "title": "Sorry GTG",
-          "duration": 64.053853,
-          "children": []
         }
       ]
     },

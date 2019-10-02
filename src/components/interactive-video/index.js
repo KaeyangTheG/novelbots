@@ -37,7 +37,7 @@ class InteractiveVideo extends React.Component {
     // begin loading the video nodes
     const videoNodes = createVideoNodes(nodes, assetRoot);
     this.nodes = videoNodes;
-    this.head = videoNodes[8];
+    this.head = videoNodes[0];
     this.curr = this.head;
     
     this.initializeVideo(this.head);
