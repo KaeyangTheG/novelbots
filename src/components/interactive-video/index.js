@@ -1,5 +1,6 @@
 import React from 'react';
 import VideoNode from './video-node';
+import {navigate} from '@reach/router';
 import './styles.css';
 
 const createVideoNodes = (videoNodes, assetRoot) => {
@@ -24,6 +25,7 @@ class InteractiveVideo extends React.Component {
     showChoices: false,
     selected: null,
     choiceDuration: 0,
+    showEndScreen: false,
   };
 
   componentDidMount() {
@@ -34,7 +36,7 @@ class InteractiveVideo extends React.Component {
     // begin loading the video nodes
     const videoNodes = createVideoNodes(nodes, assetRoot);
     this.nodes = videoNodes;
-    this.head = videoNodes[0];
+    this.head = videoNodes[8];
     this.curr = this.head;
     
     this.initializeVideo(this.head);
@@ -140,9 +142,9 @@ class InteractiveVideo extends React.Component {
               } else {
                 this.waitForVideoTime(Math.floor(video.duration - 1))
                 .then(() => {
-                  if(window.confirm('replay?')) {
-                    this.initializeVideo(this.nodes[0]);
-                  }
+                  this.setState({
+                    showEndScreen: true,
+                  });
                 });
               }
             }); 
@@ -259,11 +261,30 @@ class InteractiveVideo extends React.Component {
 
   render () {
     const {Choices, sharedViewing} = this.props;
-    const {choices, choiceDuration, showChoices, selected, duration} = this.state;
+    const {
+      choices,
+      choiceDuration,
+      showChoices,
+      selected,
+      showEndScreen
+    } = this.state;
 
     return (
       <div className="video-container">
         <div className="overlay">
+          {
+            showEndScreen ? (
+              <div className="endscreen">
+                <button onClick={() => navigate('/')}>Return to home</button>
+                <button onClick={() => {
+                  this.initializeVideo(this.nodes[0]);
+                  this.setState({ showEndScreen: false});
+                }}>
+                  Return to checkpoint
+                </button>
+              </div>
+            ) : null
+          }
           <Choices
             choiceDuration={choiceDuration}
             playbackRate={
@@ -279,7 +300,7 @@ class InteractiveVideo extends React.Component {
             }
           />
         </div>
-        <video ref={this.videoRef} />
+        <video style={{opacity: showEndScreen ? 0 : 1}} ref={this.videoRef} />
       </div>
     );
   }
