@@ -17,8 +17,6 @@
           "startChoice": 109,
           "endChoice": 120,
           "duration": 122.021900,
-          "pauseOnChoice": true,
-          "choiceDuration": 20,
           "children": [
             {
               "index": 2,
