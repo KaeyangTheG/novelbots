@@ -1,3 +1,5 @@
-# React-Static - Basic Template
+# Interactive film framework
 
-To use this template, run `react-static create` and use the `basic` template.
+## Demo
+
+https://novelbots.com/movies/
